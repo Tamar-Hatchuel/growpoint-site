@@ -1,13 +1,50 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChartBarIncreasing } from "lucide-react";
+import { ChartBarIncreasing, Users, Brain, BarChart3, ArrowRight, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
+  const benefits = [
+    {
+      icon: Users,
+      title: "Real-Time Feedback",
+      description: "Anonymous surveys and instant insights into team dynamics and collaboration patterns."
+    },
+    {
+      icon: BarChart3,
+      title: "Team Analytics", 
+      description: "Comprehensive dashboards showing engagement, cohesion metrics, and performance trends."
+    },
+    {
+      icon: Brain,
+      title: "AI-Powered Insights",
+      description: "Smart recommendations and actionable strategies based on team data and behavioral patterns."
+    }
+  ];
+
+  const testimonials = [
+    {
+      quote: "GrowPoint helped us identify communication gaps we didn't even know existed. Our team collaboration improved 40% in just 2 months.",
+      author: "Sarah Chen",
+      role: "VP of Engineering, TechFlow"
+    },
+    {
+      quote: "The anonymous feedback feature gave our team members a safe space to share honest input. Game-changer for our HR strategy.",
+      author: "Marcus Rodriguez", 
+      role: "HR Director, InnovateCorp"
+    },
+    {
+      quote: "Real-time insights into team dynamics helped us prevent conflicts before they escalated. Highly recommend for any growing team.",
+      author: "Emily Watson",
+      role: "Team Lead, DesignStudio"
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFCDB2] via-[#FFB4A2] to-[#E5989B]">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFCDB2] via-[#FFB4A2] to-[#E5989B] pt-16">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-20">
         <div className="text-center mb-16">
           {/* Logo and Brand */}
           <div className="flex justify-center items-center mb-8">
@@ -23,178 +60,114 @@ const Index = () => {
           </div>
           
           {/* Description */}
-          <p className="text-xl text-[#B5828C] max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-[#B5828C] max-w-3xl mx-auto leading-relaxed mb-8">
             GrowPoint is a SaaS platform that helps organizations understand and improve team dynamics 
             through anonymous feedback, AI insights, and real-time analytics.
           </p>
+
+          {/* Main CTA */}
+          <Link to="/demo">
+            <Button 
+              size="lg" 
+              className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-12 py-6 text-xl font-semibold"
+            >
+              Get Started Free
+              <ArrowRight className="w-6 h-6 ml-2" />
+            </Button>
+          </Link>
         </div>
 
-        {/* Problem & Solution Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">The Problem</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700">
-                Teams struggle with hidden friction, unclear feedback, and lack of data on cohesion. 
-                Traditional approaches miss the nuanced interpersonal dynamics that drive performance.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">Our Solution</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700">
-                GrowPoint delivers anonymous check-ins, real-time analytics, and AI-generated feedback 
-                to boost collaboration and performance through data-driven insights.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Core Features */}
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Core Features</h2>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {[
-              "Sociometric Input",
-              "Target Team Outcomes",
-              "AI Feedback & Insights",
-              "KPI Dashboard",
-              "Actionable Suggestions"
-            ].map((feature, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-sm border-[#FFB4A2] hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <ChartBarIncreasing className="w-8 h-8 text-[#B5828C] mx-auto mb-3" />
-                  <h3 className="font-semibold text-[#B5828C]">{feature}</h3>
+        {/* Benefits Section */}
+        <div className="mb-20">
+          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Transform Your Team Dynamics</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {benefits.map((benefit, index) => (
+              <Card key={index} className="bg-white/90 backdrop-blur-sm border-[#FFB4A2] hover:shadow-xl transition-all hover:scale-105">
+                <CardHeader className="text-center">
+                  <div className="w-16 h-16 bg-[#B5828C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <benefit.icon className="w-8 h-8 text-[#B5828C]" />
+                  </div>
+                  <CardTitle className="text-[#B5828C] text-xl">{benefit.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 text-center">{benefit.description}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        {/* Target Audiences */}
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Who We Serve</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C] text-lg">Tech Companies</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700">Fast-growing teams needing cohesion insights</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C] text-lg">HR Professionals</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700">Leaders tracking team morale and engagement</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C] text-lg">Team Managers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700">Managers resolving peer friction early</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C] text-lg">Employees</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700">Individuals seeking growth feedback</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Key Personas */}
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Key Personas</h2>
+        {/* Testimonials Section */}
+        <div className="mb-20">
+          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">What Our Users Say</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C]">HR Director "Dana"</CardTitle>
-                <CardDescription>Strategic Overview</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">Tracks team morale weekly and implements organization-wide engagement strategies</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C]">Team Lead "Alex"</CardTitle>
-                <CardDescription>Tactical Management</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">Resolves peer friction early and optimizes team collaboration dynamics</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-              <CardHeader>
-                <CardTitle className="text-[#B5828C]">Employee "Leah"</CardTitle>
-                <CardDescription>Personal Growth</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">Seeks constructive feedback for professional development and team contribution</p>
-              </CardContent>
-            </Card>
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
+                <CardContent className="pt-6">
+                  <div className="flex items-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
+                  <div>
+                    <p className="font-semibold text-[#B5828C]">{testimonial.author}</p>
+                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </div>
-
-        {/* Business Model & Success Metrics */}
-        <div className="grid md:grid-cols-2 gap-8">
-          <Card className="bg-white/90 backdrop-blur-sm border-[#B5828C]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">Business Model</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p><strong>Type:</strong> SaaS Platform</p>
-                <p><strong>Pricing:</strong> Subscription per team/organization</p>
-                <p><strong>Technology:</strong> AI-powered insights with LLM integration</p>
-                <p><strong>Delivery:</strong> Real-time analytics and feedback</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/90 backdrop-blur-sm border-[#B5828C]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">Success Metrics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p>✅ Role-based dashboards functional</p>
-                <p>✅ Real-time analytics visualized</p>
-                <p>🎯 At least 3 teams onboarded</p>
-                <p>📊 A/B testing on onboarding flows</p>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-16">
-          <Button 
-            size="lg" 
-            className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-4 text-lg"
-          >
-            Get Started with GrowPoint
-          </Button>
+        <div className="text-center">
+          <Card className="bg-white/90 backdrop-blur-sm border-[#B5828C] max-w-3xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-[#B5828C] text-3xl">Ready to Transform Your Team?</CardTitle>
+              <CardDescription className="text-lg text-gray-700">
+                Join hundreds of teams already using GrowPoint to build stronger, more collaborative workplaces.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/demo">
+                  <Button 
+                    size="lg" 
+                    className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-3"
+                  >
+                    Watch Free Demo
+                  </Button>
+                </Link>
+                <Link to="/contact">
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="border-[#B5828C] text-[#B5828C] hover:bg-[#B5828C] hover:text-white px-8 py-3"
+                  >
+                    Request Demo
+                  </Button>
+                </Link>
+              </div>
+              <p className="text-sm text-gray-600">
+                No credit card required • 14-day free trial • Setup in minutes
+              </p>
+            </CardContent>
+          </Card>
         </div>
+
+        {/* Footer */}
+        <footer className="mt-20 pt-8 border-t border-[#E5989B]/30">
+          <div className="text-center text-[#B5828C]">
+            <p className="mb-4">© 2024 GrowPoint. All rights reserved.</p>
+            <div className="flex justify-center space-x-6 text-sm">
+              <a href="#" className="hover:underline">Privacy Policy</a>
+              <a href="#" className="hover:underline">Terms of Service</a>
+              <a href="/contact" className="hover:underline">Contact</a>
+              <a href="#" className="hover:underline">Support</a>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

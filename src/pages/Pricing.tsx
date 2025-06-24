@@ -1,0 +1,200 @@
+
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
+
+const Pricing = () => {
+  const [isYearly, setIsYearly] = useState(false);
+
+  const tiers = [
+    {
+      id: "basic",
+      name: "Basic",
+      price: {
+        monthly: 129,
+        yearly: 99,
+      },
+      description: "Core features, email support",
+      subtitle: "2–50 employees",
+      features: [
+        "Anonymous feedback collection",
+        "Basic team analytics",
+        "Email notifications",
+        "Monthly reports",
+        "Email support",
+      ],
+      cta: "Get Started",
+      popular: false,
+    },
+    {
+      id: "standard",
+      name: "Standard",
+      price: {
+        monthly: 299,
+        yearly: 239,
+      },
+      description: "Analytics, onboarding tools",
+      subtitle: "51–200 employees",
+      features: [
+        "Everything in Basic",
+        "Advanced analytics dashboard",
+        "Custom onboarding flows",
+        "Weekly insights",
+        "Priority email support",
+        "Team collaboration tools",
+      ],
+      cta: "Get Started",
+      popular: true,
+    },
+    {
+      id: "pro",
+      name: "Pro",
+      price: {
+        monthly: 599,
+        yearly: 479,
+      },
+      description: "Advanced insights, priority support",
+      subtitle: "201–500 employees",
+      features: [
+        "Everything in Standard",
+        "AI-powered insights",
+        "Real-time notifications",
+        "Custom integrations",
+        "Phone support",
+        "Dedicated onboarding",
+      ],
+      cta: "Get Started",
+      popular: false,
+    },
+    {
+      id: "enterprise",
+      name: "Enterprise",
+      price: {
+        monthly: "Custom",
+        yearly: "Custom",
+      },
+      description: "Dedicated manager, integrations",
+      subtitle: "501+ employees",
+      features: [
+        "Everything in Pro",
+        "Dedicated account manager",
+        "Custom integrations",
+        "API access",
+        "SLA guarantees",
+        "On-premise deployment options",
+      ],
+      cta: "Contact Us",
+      popular: false,
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#FFCDB2] via-[#FFB4A2] to-[#E5989B] pt-20">
+      <div className="container mx-auto px-4 py-16">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-[#B5828C] mb-6">Simple Pricing</h1>
+          <p className="text-xl text-[#B5828C] max-w-2xl mx-auto mb-12">
+            Choose the best plan for your team size and needs. All plans include our core features with scalable options.
+          </p>
+
+          {/* Pricing Toggle */}
+          <div className="flex items-center justify-center mb-12">
+            <span className={`mr-3 ${!isYearly ? 'text-[#B5828C] font-semibold' : 'text-gray-600'}`}>
+              Monthly
+            </span>
+            <button
+              onClick={() => setIsYearly(!isYearly)}
+              className={`relative w-16 h-8 rounded-full transition-colors ${
+                isYearly ? 'bg-[#B5828C]' : 'bg-gray-300'
+              }`}
+            >
+              <div
+                className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-transform ${
+                  isYearly ? 'translate-x-9' : 'translate-x-1'
+                }`}
+              />
+            </button>
+            <span className={`ml-3 ${isYearly ? 'text-[#B5828C] font-semibold' : 'text-gray-600'}`}>
+              Yearly
+              <span className="ml-1 text-sm text-green-600">(Save 20%)</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Pricing Cards */}
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+          {tiers.map((tier) => (
+            <Card
+              key={tier.id}
+              className={`relative bg-white/90 backdrop-blur-sm border-2 hover:shadow-xl transition-all ${
+                tier.popular 
+                  ? 'border-[#B5828C] scale-105 shadow-lg' 
+                  : 'border-[#FFB4A2] hover:border-[#E5989B]'
+              }`}
+            >
+              {tier.popular && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-[#B5828C] text-white px-4 py-1 rounded-full text-sm font-medium">
+                    Most Popular
+                  </span>
+                </div>
+              )}
+
+              <CardHeader className="text-center pb-4">
+                <CardTitle className="text-[#B5828C] text-xl">{tier.name}</CardTitle>
+                <CardDescription className="text-sm text-gray-600">{tier.subtitle}</CardDescription>
+                <div className="mt-4">
+                  <span className="text-4xl font-bold text-[#B5828C]">
+                    {typeof tier.price.monthly === 'number' 
+                      ? `$${isYearly ? tier.price.yearly : tier.price.monthly}`
+                      : tier.price.monthly
+                    }
+                  </span>
+                  {typeof tier.price.monthly === 'number' && (
+                    <span className="text-gray-600 ml-1">/month</span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600 mt-2">{tier.description}</p>
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                <ul className="space-y-3">
+                  {tier.features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-sm">
+                      <Check className="w-4 h-4 text-green-600 mr-3 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button
+                  className={`w-full mt-6 ${
+                    tier.popular
+                      ? 'bg-[#B5828C] hover:bg-[#B5828C]/90 text-white'
+                      : 'bg-white text-[#B5828C] border-2 border-[#B5828C] hover:bg-[#B5828C] hover:text-white'
+                  }`}
+                >
+                  {tier.cta}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Additional Info */}
+        <div className="text-center mt-16">
+          <p className="text-[#B5828C] mb-4">
+            All plans include a 14-day free trial. No credit card required.
+          </p>
+          <p className="text-sm text-gray-600">
+            Need a custom solution? <a href="/contact" className="text-[#B5828C] underline">Contact our sales team</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Pricing;
