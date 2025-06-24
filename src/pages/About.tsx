@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Target, Brain, Building } from "lucide-react";
+import PageLayout from "@/components/layout/PageLayout";
 
 const About = () => {
   const audienceCards = [
@@ -29,7 +30,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFCDB2] via-[#FFB4A2] to-[#E5989B] pt-20">
+    <PageLayout>
       <div className="container mx-auto px-4 py-16">
         {/* Mission Section */}
         <div className="text-center mb-16">
@@ -101,7 +102,7 @@ const About = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

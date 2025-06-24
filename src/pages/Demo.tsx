@@ -1,29 +1,14 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, Users, BarChart3, Brain } from "lucide-react";
+import { Play, ArrowRight, BarChart3 } from "lucide-react";
+import PageLayout from "@/components/layout/PageLayout";
+import ProcessSteps from "@/components/sections/ProcessSteps";
+import CTASection from "@/components/sections/CTASection";
 
 const Demo = () => {
-  const steps = [
-    {
-      icon: Users,
-      title: "Take the Test",
-      description: "Team members complete anonymous sociometric surveys about collaboration and communication preferences."
-    },
-    {
-      icon: Brain,
-      title: "Get AI Feedback", 
-      description: "Our AI analyzes responses and generates personalized insights about team dynamics and potential friction points."
-    },
-    {
-      icon: BarChart3,
-      title: "View Dashboard",
-      description: "Access real-time analytics, actionable recommendations, and track team cohesion metrics over time."
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFCDB2] via-[#FFB4A2] to-[#E5989B] pt-20">
+    <PageLayout>
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-16">
@@ -47,7 +32,6 @@ const Demo = () => {
                     Play Demo
                   </Button>
                 </div>
-                {/* Upload instruction overlay */}
                 <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
                   <p className="text-xs text-gray-600">
                     📹 Upload your demo video here
@@ -58,34 +42,7 @@ const Demo = () => {
           </Card>
         </div>
 
-        {/* 3-Step Process */}
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">How It Works</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="text-center">
-                <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2] hover:shadow-lg transition-shadow h-full">
-                  <CardHeader>
-                    <div className="w-16 h-16 bg-[#B5828C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <step.icon className="w-8 h-8 text-[#B5828C]" />
-                    </div>
-                    <CardTitle className="text-[#B5828C]">
-                      Step {index + 1}: {step.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700">{step.description}</p>
-                  </CardContent>
-                </Card>
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
-                    <ArrowRight className="w-6 h-6 text-[#B5828C]" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <ProcessSteps />
 
         {/* Screenshot Gallery Placeholder */}
         <div className="mb-16">
@@ -106,31 +63,15 @@ const Demo = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center">
-          <Card className="bg-white/90 backdrop-blur-sm border-[#B5828C] max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C] text-2xl">Ready to Transform Your Team?</CardTitle>
-              <CardDescription className="text-lg">
-                Try GrowPoint with your team today and see the difference data-driven insights can make.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                size="lg" 
-                className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-4 text-lg"
-              >
-                Try the Product Live
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <p className="text-sm text-gray-600 mt-4">
-                Opens the actual GrowPoint application in a new tab
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <CTASection 
+          title="Ready to Transform Your Team?"
+          description="Try GrowPoint with your team today and see the difference data-driven insights can make."
+          primaryButtonText="Try the Product Live"
+          primaryButtonLink="#"
+          showSecondaryButton={false}
+        />
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
