@@ -1,98 +1,150 @@
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, BarChart3 } from "lucide-react";
 import PageLayout from "@/components/layout/PageLayout";
-import ProcessSteps from "@/components/sections/ProcessSteps";
-import CTASection from "@/components/sections/CTASection";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Play, Users, BarChart3, MessageSquare, Target, ExternalLink } from "lucide-react";
+import TimedPopup from "@/components/ui/TimedPopup";
 
 const Demo = () => {
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16">
+      <div className="py-16">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-[#B5828C] mb-6">See GrowPoint in Action</h1>
+          <h1 className="text-5xl font-bold text-[#B5828C] mb-6">Experience GrowPoint Live</h1>
           <p className="text-xl text-[#B5828C] max-w-3xl mx-auto">
-            Experience how GrowPoint transforms team dynamics through real-time feedback and AI-powered insights.
+            See how GrowPoint transforms team dynamics in real-time. Watch our interactive demo and try the actual product yourself.
           </p>
         </div>
 
-        {/* Video Section */}
-        <div className="mb-16">
-          <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B] overflow-hidden">
-            <CardContent className="p-0">
-              <div className="relative bg-gray-100 aspect-video flex items-center justify-center">
-                <div className="text-center">
-                  <Play className="w-16 h-16 text-[#B5828C] mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-[#B5828C] mb-2">Product Demo Video</h3>
-                  <p className="text-gray-600 mb-4">Watch a 3-minute overview of GrowPoint's key features</p>
-                  <Button className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white">
-                    <Play className="w-4 h-4 mr-2" />
-                    Play Demo
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Video Demo Section */}
+            <Card className="mb-12 bg-white/90 backdrop-blur-sm border-[#E5989B]">
+              <CardHeader>
+                <CardTitle className="text-[#B5828C] text-2xl flex items-center">
+                  <Play className="w-6 h-6 mr-2" />
+                  Interactive Product Demo
+                </CardTitle>
+                <CardDescription>
+                  Watch a 3-minute walkthrough of GrowPoint's key features and see real team transformations.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="aspect-video bg-gradient-to-br from-[#FFCDB2] to-[#FFB4A2] rounded-lg flex items-center justify-center mb-6">
+                  <div className="text-center">
+                    <Play className="w-16 h-16 text-[#B5828C] mx-auto mb-4" />
+                    <p className="text-[#B5828C] font-medium">Demo Video Coming Soon</p>
+                    <p className="text-[#B5828C]/70 text-sm">Interactive product walkthrough</p>
+                  </div>
+                </div>
+                
+                <div className="text-center space-y-4">
+                  <Button 
+                    size="lg"
+                    className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white"
+                    onClick={() => window.open('https://preview--growpoint-app.lovable.app/', '_blank')}
+                  >
+                    <ExternalLink className="w-5 h-5 mr-2" />
+                    Try the Product Live
+                  </Button>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="border-[#B5828C] text-[#B5828C] hover:bg-[#B5828C] hover:text-white ml-4"
+                    onClick={() => window.location.href = '/contact'}
+                  >
+                    Contact Us for a Custom Demo
                   </Button>
                 </div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                  <p className="text-xs text-gray-600">
-                    📹 Upload your demo video here
+              </CardContent>
+            </Card>
+
+            {/* Feature Highlights */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
+                <CardHeader>
+                  <CardTitle className="text-[#B5828C] flex items-center">
+                    <Users className="w-5 h-5 mr-2" />
+                    Team Collaboration
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">
+                    See how teams work together more effectively with real-time collaboration tools and structured feedback systems.
                   </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <ProcessSteps />
-
-        {/* Screenshot Gallery Placeholder */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-[#B5828C] text-center mb-8">Product Interface</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Card key={item} className="bg-white/80 backdrop-blur-sm border-[#FFB4A2] overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="aspect-video bg-gradient-to-br from-[#FFCDB2] to-[#E5989B] flex items-center justify-center">
-                    <div className="text-center text-[#B5828C]">
-                      <BarChart3 className="w-12 h-12 mx-auto mb-2" />
-                      <p className="text-sm font-medium">Screenshot {item}</p>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
 
-        {/* Updated CTA Section with both buttons */}
-        <div className="text-center mb-8">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a 
-              href="https://preview--growpoint-app.lovable.app/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
+              <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
+                <CardHeader>
+                  <CardTitle className="text-[#B5828C] flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    Analytics Dashboard
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">
+                    Track team performance, engagement levels, and collaboration patterns with comprehensive analytics.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
+                <CardHeader>
+                  <CardTitle className="text-[#B5828C] flex items-center">
+                    <MessageSquare className="w-5 h-5 mr-2" />
+                    Feedback System
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">
+                    Structured feedback collection and analysis helps identify improvement areas and celebrate successes.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
+                <CardHeader>
+                  <CardTitle className="text-[#B5828C] flex items-center">
+                    <Target className="w-5 h-5 mr-2" />
+                    Goal Tracking
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700">
+                    Set, monitor, and achieve team objectives with built-in goal tracking and progress visualization.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Call to Action */}
+            <div className="text-center">
+              <h2 className="text-3xl font-bold text-[#B5828C] mb-4">Ready to Transform Your Team?</h2>
+              <p className="text-[#B5828C] mb-8 max-w-2xl mx-auto">
+                Join hundreds of teams who have already improved their collaboration and productivity with GrowPoint.
+              </p>
               <Button 
-                size="lg" 
-                className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-3"
+                size="lg"
+                className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white"
+                onClick={() => window.location.href = '/contact'}
               >
-                Try the Product Live
-                <ArrowRight className="w-5 h-5 ml-2" />
+                Get Started Today
               </Button>
-            </a>
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="border-[#B5828C] text-[#B5828C] hover:bg-[#B5828C] hover:text-white px-8 py-3"
-              onClick={() => window.location.href = '/contact'}
-            >
-              Contact Us for a Custom Demo
-            </Button>
+            </div>
           </div>
-          <p className="text-sm text-gray-600">
-            No credit card required • 14-day free trial • Setup in minutes
-          </p>
         </div>
       </div>
+      
+      <TimedPopup
+        message="Let's find the right plan for your company"
+        buttonText="View Pricing"
+        buttonLink="/pricing"
+        delay={5000}
+        sessionKey="demo-popup-shown"
+      />
     </PageLayout>
   );
 };

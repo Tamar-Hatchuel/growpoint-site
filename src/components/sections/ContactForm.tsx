@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Send, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -29,26 +30,52 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      console.log('Lead form submitted:', formData);
-      
-      toast({
-        title: "Demo Request Submitted!",
-        description: "We'll contact you within 24 hours to schedule your personalized demo.",
-      });
+    try {
+      const { error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            full_name: formData.name,
+            company_name: formData.company,
+            work_email: formData.email,
+            team_size: formData.teamSize,
+            team_challenges: formData.message
+          }
+        ]);
 
-      // Reset form
-      setFormData({
-        name: '',
-        company: '',
-        email: '',
-        teamSize: '',
-        message: ''
+      if (error) {
+        console.error('Error saving lead:', error);
+        toast({
+          title: "Submission Error",
+          description: "There was a problem submitting your request. Please try again.",
+          variant: "destructive"
+        });
+      } else {
+        console.log('Lead successfully saved to Supabase');
+        toast({
+          title: "Demo Request Submitted!",
+          description: "We'll contact you within 24 hours to schedule your personalized demo.",
+        });
+
+        // Reset form
+        setFormData({
+          name: '',
+          company: '',
+          email: '',
+          teamSize: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: "Submission Error",
+        description: "There was a problem submitting your request. Please try again.",
+        variant: "destructive"
       });
-      
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
