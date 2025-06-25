@@ -63,13 +63,35 @@ const Demo = () => {
           </div>
         </div>
 
-        <CTASection 
-          title="Ready to Transform Your Team?"
-          description="Try GrowPoint with your team today and see the difference data-driven insights can make."
-          primaryButtonText="Try the Product Live"
-          primaryButtonLink="#"
-          showSecondaryButton={false}
-        />
+        {/* Updated CTA Section with both buttons */}
+        <div className="text-center mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <a 
+              href="https://preview--growpoint-app.lovable.app/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Button 
+                size="lg" 
+                className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-3"
+              >
+                Try the Product Live
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </a>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="border-[#B5828C] text-[#B5828C] hover:bg-[#B5828C] hover:text-white px-8 py-3"
+              onClick={() => window.location.href = '/contact'}
+            >
+              Contact Us for a Custom Demo
+            </Button>
+          </div>
+          <p className="text-sm text-gray-600">
+            No credit card required • 14-day free trial • Setup in minutes
+          </p>
+        </div>
       </div>
     </PageLayout>
   );

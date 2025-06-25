@@ -7,14 +7,14 @@ const HeroSection = () => {
   return (
     <div className="container mx-auto px-4 py-20">
       <div className="text-center mb-16">
-        {/* Logo and Brand */}
-        <div className="flex justify-center items-center mb-8">
+        {/* Centered Logo and Brand */}
+        <div className="flex flex-col items-center justify-center mb-8">
           <img 
             src="/lovable-uploads/43b0b874-e122-40e2-b660-a589c42b2368.png" 
             alt="GrowPoint Logo" 
-            className="w-20 h-20 mr-4"
+            className="w-20 h-20 mb-4"
           />
-          <div>
+          <div className="text-center">
             <h1 className="text-6xl font-bold text-[#B5828C] mb-2">GrowPoint</h1>
             <p className="text-2xl text-[#B5828C] font-medium">"Empowering People. Accelerating Teams."</p>
           </div>

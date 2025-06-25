@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
     { name: 'Pricing', path: '/pricing' },
     { name: 'Free Demo', path: '/demo' },
-    { name: 'Lead Form', path: '/contact' },
+    { name: 'Contact Us', path: '/contact' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
