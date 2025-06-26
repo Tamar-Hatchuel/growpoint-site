@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const verifySupabaseConnection = () => {
   console.log('=== SUPABASE CONNECTION VERIFICATION ===');
   
-  // Verify configuration matches expected values
+  // Known configuration values for this project
   const expectedUrl = 'https://ydtkmvnzaqncuytxqnwk.supabase.co';
   const expectedProjectId = 'ydtkmvnzaqncuytxqnwk';
   
@@ -13,7 +13,7 @@ export const verifySupabaseConnection = () => {
     expectedProjectId,
     clientConfigured: !!supabase,
     clientType: typeof supabase,
-    expectedProjectIdMatch: expectedUrl.includes(expectedProjectId)
+    projectIdMatch: expectedUrl.includes(expectedProjectId)
   });
   
   // Log role information
@@ -24,8 +24,9 @@ export const verifySupabaseConnection = () => {
   });
   
   return {
-    isConfiguredCorrectly: true, // We know it's configured from the client
-    projectId: expectedProjectId
+    isConfiguredCorrectly: true,
+    projectId: expectedProjectId,
+    url: expectedUrl
   };
 };
 
@@ -79,9 +80,9 @@ export const testEndToEndFormSubmission = async () => {
   console.log('=== END-TO-END FORM SUBMISSION TEST ===');
   
   const testFormData = {
-    full_name: 'Test Debug',
+    full_name: 'E2E Test Debug',
     company_name: 'GrowPoint',
-    work_email: 'debug@growpoint.app',
+    work_email: 'e2e@growpoint.app',
     team_size: '1-10',
     team_challenges: 'Testing end-to-end flow',
     submitted_at: new Date().toISOString()
