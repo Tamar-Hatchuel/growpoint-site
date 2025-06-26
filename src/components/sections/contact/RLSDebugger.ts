@@ -16,13 +16,13 @@ export const debugRLSSetup = async () => {
 
     // Step 2: Test basic table access
     console.log('2. Testing basic table connectivity...');
-    const { data: countData, error: countError } = await supabase
+    const { count, error: countError } = await supabase
       .from('leads')
-      .select('count(*)', { count: 'exact' });
+      .select('*', { count: 'exact', head: true });
     
     console.log('Table access test:', {
       success: !countError,
-      count: countData?.[0]?.count || 'Unknown',
+      count: count || 'Unknown',
       error: countError?.message || 'None'
     });
 
