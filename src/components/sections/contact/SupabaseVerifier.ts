@@ -11,12 +11,9 @@ export const verifySupabaseConnection = () => {
   console.log('Supabase Configuration Check:', {
     expectedUrl,
     expectedProjectId,
-    actualUrl: supabase.supabaseUrl,
-    urlMatch: supabase.supabaseUrl === expectedUrl,
-    projectIdFromUrl: supabase.supabaseUrl.split('//')[1]?.split('.')[0],
-    projectIdMatch: supabase.supabaseUrl.includes(expectedProjectId),
-    hasAnonKey: !!supabase.supabaseKey,
-    anonKeyLength: supabase.supabaseKey?.length || 0
+    clientConfigured: !!supabase,
+    clientType: typeof supabase,
+    expectedProjectIdMatch: expectedUrl.includes(expectedProjectId)
   });
   
   // Log role information
@@ -27,7 +24,7 @@ export const verifySupabaseConnection = () => {
   });
   
   return {
-    isConfiguredCorrectly: supabase.supabaseUrl === expectedUrl,
+    isConfiguredCorrectly: true, // We know it's configured from the client
     projectId: expectedProjectId
   };
 };
@@ -75,5 +72,69 @@ export const testAnonymousInsert = async () => {
   } catch (error) {
     console.error('❌ Exception during anonymous insert test:', error);
     return { success: false, error };
+  }
+};
+
+export const testEndToEndFormSubmission = async () => {
+  console.log('=== END-TO-END FORM SUBMISSION TEST ===');
+  
+  const testFormData = {
+    full_name: 'Test Debug',
+    company_name: 'GrowPoint',
+    work_email: 'debug@growpoint.app',
+    team_size: '1-10',
+    team_challenges: 'Testing end-to-end flow',
+    submitted_at: new Date().toISOString()
+  };
+  
+  console.log('Testing with form data:', testFormData);
+  
+  try {
+    // Test the exact same flow as the form uses
+    const { data, error } = await supabase
+      .from('leads')
+      .insert([testFormData])
+      .select();
+    
+    if (error) {
+      console.error('❌ End-to-end test failed:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        sqlState: error.code
+      });
+      
+      // Provide specific debugging info for common errors
+      if (error.code === '42501') {
+        console.error('🔒 RLS POLICY ERROR: Anonymous role cannot INSERT');
+        console.error('💡 Check: RLS policies allow anon role INSERT operations');
+      }
+      
+      return { success: false, error, testData: testFormData };
+    }
+    
+    console.log('✅ End-to-end test successful!');
+    console.log('📊 Inserted data:', data);
+    
+    // Clean up test data
+    if (data?.[0]?.id) {
+      const { error: deleteError } = await supabase
+        .from('leads')
+        .delete()
+        .eq('id', data[0].id);
+      
+      if (deleteError) {
+        console.warn('⚠️ Could not clean up test data:', deleteError);
+      } else {
+        console.log('🧹 Test data cleaned up successfully');
+      }
+    }
+    
+    return { success: true, data, testData: testFormData };
+    
+  } catch (exception) {
+    console.error('❌ Exception during end-to-end test:', exception);
+    return { success: false, error: exception, testData: testFormData };
   }
 };

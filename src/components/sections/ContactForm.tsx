@@ -10,6 +10,7 @@ import { submitLeadWithEnhancedDebugging } from "./contact/EnhancedSubmitHandler
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
 import { debugRLSSetup } from "./contact/RLSDebugger";
 import { testAnonymousInsert } from "./contact/SupabaseVerifier";
+import DatabaseConnectionTester from "./contact/DatabaseConnectionTester";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -201,6 +202,9 @@ const ContactForm = () => {
             </form>
           </CardContent>
         </Card>
+
+        {/* Database Connection Tester - New debugging component */}
+        <DatabaseConnectionTester />
 
         {/* Benefits Section */}
         <Card className="mt-8 bg-white/80 backdrop-blur-sm border-[#FFB4A2]">

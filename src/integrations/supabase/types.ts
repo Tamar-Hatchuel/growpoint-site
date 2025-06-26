@@ -22,7 +22,7 @@ export type Database = {
         Insert: {
           company_name?: string | null
           full_name?: string | null
-          id: string
+          id?: string
           submitted_at?: string | null
           team_challenges?: string | null
           team_size?: string | null
