@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Send, CheckCircle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import LeadInputForm from "./contact/LeadInputForm";
+import { submitLead } from "./contact/SubmitHandler";
+import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -18,83 +19,19 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const teamSizeOptions = [
-    '2-10 employees',
-    '11-50 employees', 
-    '51-200 employees',
-    '201-500 employees',
-    '500+ employees'
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // First, save to Supabase
-      const { error } = await supabase
-        .from('leads')
-        .insert([
-          {
-            full_name: formData.name,
-            company_name: formData.company,
-            work_email: formData.email,
-            team_size: formData.teamSize,
-            team_challenges: formData.message
-          }
-        ]);
+      // Save to Supabase
+      await submitLead(formData);
 
-      if (error) {
-        console.error('Error saving lead:', error);
-        toast({
-          title: "Submission Error",
-          description: "There was a problem submitting your request. Please try again.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      console.log('Lead successfully saved to Supabase');
-
-      // Send confirmation email to lead
-      try {
-        const confirmationResponse = await supabase.functions.invoke('send-lead-confirmation', {
-          body: {
-            name: formData.name,
-            email: formData.email,
-            company: formData.company
-          }
-        });
-
-        if (confirmationResponse.error) {
-          console.error('Error sending confirmation email:', confirmationResponse.error);
-        } else {
-          console.log('Confirmation email sent successfully');
-        }
-      } catch (emailError) {
-        console.error('Error invoking confirmation email function:', emailError);
-      }
-
-      // Send admin notification
-      try {
-        const adminResponse = await supabase.functions.invoke('send-admin-notification', {
-          body: {
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            teamSize: formData.teamSize,
-            message: formData.message
-          }
-        });
-
-        if (adminResponse.error) {
-          console.error('Error sending admin notification:', adminResponse.error);
-        } else {
-          console.log('Admin notification sent successfully');
-        }
-      } catch (emailError) {
-        console.error('Error invoking admin notification function:', emailError);
-      }
+      // Send emails (don't block on email failures)
+      await Promise.allSettled([
+        sendConfirmationEmail(formData),
+        sendAdminNotification(formData)
+      ]);
 
       // Show success message
       toast({
@@ -142,89 +79,7 @@ const ContactForm = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="border-[#FFB4A2] focus:ring-[#B5828C] focus:border-[#B5828C]"
-                  placeholder="Your full name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                  Company Name *
-                </label>
-                <Input
-                  id="company"
-                  name="company"
-                  type="text"
-                  required
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="border-[#FFB4A2] focus:ring-[#B5828C] focus:border-[#B5828C]"
-                  placeholder="Your company name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Work Email *
-                </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="border-[#FFB4A2] focus:ring-[#B5828C] focus:border-[#B5828C]"
-                  placeholder="your.email@company.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="teamSize" className="block text-sm font-medium text-gray-700 mb-2">
-                  Team Size *
-                </label>
-                <select
-                  id="teamSize"
-                  name="teamSize"
-                  required
-                  value={formData.teamSize}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-[#FFB4A2] rounded-md focus:ring-[#B5828C] focus:border-[#B5828C] bg-white"
-                >
-                  <option value="">Select your team size</option>
-                  {teamSizeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Tell us about your team challenges (optional)
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-[#FFB4A2] rounded-md focus:ring-[#B5828C] focus:border-[#B5828C] resize-none"
-                  placeholder="What team dynamics challenges are you facing? What would you like to see in the demo?"
-                />
-              </div>
+              <LeadInputForm formData={formData} onChange={handleChange} />
 
               <Button
                 type="submit"
