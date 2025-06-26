@@ -11,6 +11,8 @@ interface FormData {
 
 export const sendConfirmationEmail = async (formData: FormData) => {
   try {
+    console.log('Sending confirmation email to:', formData.email);
+    
     const response = await supabase.functions.invoke('send-lead-confirmation', {
       body: {
         name: formData.name,
@@ -21,19 +23,21 @@ export const sendConfirmationEmail = async (formData: FormData) => {
 
     if (response.error) {
       console.error('Error sending confirmation email:', response.error);
-      return false;
+      throw new Error(`Confirmation email failed: ${response.error.message}`);
     }
 
-    console.log('Confirmation email sent successfully');
-    return true;
+    console.log('Confirmation email sent successfully:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Error invoking confirmation email function:', error);
-    return false;
+    throw error; // Re-throw to let the caller handle it
   }
 };
 
 export const sendAdminNotification = async (formData: FormData) => {
   try {
+    console.log('Sending admin notification for lead:', formData.name);
+    
     const response = await supabase.functions.invoke('send-admin-notification', {
       body: {
         name: formData.name,
@@ -46,13 +50,13 @@ export const sendAdminNotification = async (formData: FormData) => {
 
     if (response.error) {
       console.error('Error sending admin notification:', response.error);
-      return false;
+      throw new Error(`Admin notification failed: ${response.error.message}`);
     }
 
-    console.log('Admin notification sent successfully');
-    return true;
+    console.log('Admin notification sent successfully:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Error invoking admin notification function:', error);
-    return false;
+    throw error; // Re-throw to let the caller handle it
   }
 };

@@ -11,8 +11,10 @@ interface FormData {
 }
 
 export const submitLead = async (formData: FormData) => {
+  console.log('Attempting to submit lead:', formData);
+  
   // Save to Supabase with generated ID
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('leads')
     .insert([
       {
@@ -24,13 +26,14 @@ export const submitLead = async (formData: FormData) => {
         team_challenges: formData.message,
         submitted_at: new Date().toISOString()
       }
-    ]);
+    ])
+    .select(); // Add select to get the inserted data
 
   if (error) {
-    console.error('Error saving lead:', error);
-    throw new Error('Failed to save lead to database');
+    console.error('Supabase error details:', error);
+    throw new Error(`Database error: ${error.message} (Code: ${error.code})`);
   }
 
-  console.log('Lead successfully saved to Supabase');
-  return true;
+  console.log('Lead successfully saved to Supabase:', data);
+  return data;
 };

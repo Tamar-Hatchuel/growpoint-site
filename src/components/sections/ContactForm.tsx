@@ -24,14 +24,28 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
+      console.log('Starting form submission...');
+      
       // Save to Supabase
-      await submitLead(formData);
+      const savedLead = await submitLead(formData);
+      console.log('Lead saved successfully:', savedLead);
 
       // Send emails (don't block on email failures)
-      await Promise.allSettled([
+      console.log('Sending emails...');
+      const emailResults = await Promise.allSettled([
         sendConfirmationEmail(formData),
         sendAdminNotification(formData)
       ]);
+
+      // Log email results
+      emailResults.forEach((result, index) => {
+        const emailType = index === 0 ? 'confirmation' : 'admin notification';
+        if (result.status === 'fulfilled') {
+          console.log(`${emailType} email sent successfully:`, result.value);
+        } else {
+          console.error(`${emailType} email failed:`, result.reason);
+        }
+      });
 
       // Show success message
       toast({
@@ -49,10 +63,12 @@ const ContactForm = () => {
       });
 
     } catch (error) {
-      console.error('Unexpected error:', error);
+      console.error('Form submission error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      
       toast({
         title: "Submission Error",
-        description: "There was a problem submitting your request. Please try again.",
+        description: `There was a problem submitting your request: ${errorMessage}. Please try again.`,
         variant: "destructive"
       });
     } finally {
