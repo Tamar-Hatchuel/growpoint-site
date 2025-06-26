@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from 'uuid';
 
 interface FormData {
   name: string;
@@ -10,16 +11,18 @@ interface FormData {
 }
 
 export const submitLead = async (formData: FormData) => {
-  // Save to Supabase
+  // Save to Supabase with generated ID
   const { error } = await supabase
     .from('leads')
     .insert([
       {
+        id: uuidv4(), // Generate a UUID for the required id field
         full_name: formData.name,
         company_name: formData.company,
         work_email: formData.email,
         team_size: formData.teamSize,
-        team_challenges: formData.message
+        team_challenges: formData.message,
+        submitted_at: new Date().toISOString()
       }
     ]);
 
