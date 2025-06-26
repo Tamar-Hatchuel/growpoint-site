@@ -14,6 +14,9 @@ export const sendConfirmationEmail = async (formData: FormData) => {
   console.log('Email target:', formData.email);
   
   try {
+    // Check if RESEND_API_KEY is configured
+    console.log('Checking Resend configuration...');
+    
     const { data, error } = await supabase.functions.invoke('send-lead-confirmation', {
       body: {
         name: formData.name,
@@ -25,14 +28,31 @@ export const sendConfirmationEmail = async (formData: FormData) => {
     });
 
     if (error) {
-      console.error('❌ Confirmation email failed:', error);
+      console.error('❌ Confirmation email failed:', {
+        error: error,
+        message: error.message,
+        context: error.context || 'No additional context'
+      });
+      
+      if (error.message?.includes('RESEND_API_KEY')) {
+        throw new Error('⛔ Missing or invalid RESEND_API_KEY – cannot send confirmation email');
+      }
+      
       throw new Error(`Confirmation email failed: ${error.message}`);
     }
 
-    console.log('✅ Confirmation email sent successfully:', data);
+    console.log('✅ Confirmation email sent successfully:', {
+      success: true,
+      response: data,
+      recipient: formData.email
+    });
     return data;
   } catch (error) {
-    console.error('❌ Exception in confirmation email:', error);
+    console.error('❌ Exception in confirmation email:', {
+      error: error,
+      message: error.message,
+      recipient: formData.email
+    });
     throw error;
   }
 };
@@ -53,14 +73,31 @@ export const sendAdminNotification = async (formData: FormData) => {
     });
 
     if (error) {
-      console.error('❌ Admin notification failed:', error);
+      console.error('❌ Admin notification failed:', {
+        error: error,
+        message: error.message,
+        context: error.context || 'No additional context'
+      });
+      
+      if (error.message?.includes('RESEND_API_KEY')) {
+        throw new Error('⛔ Missing or invalid RESEND_API_KEY – cannot send admin notification');
+      }
+      
       throw new Error(`Admin notification failed: ${error.message}`);
     }
 
-    console.log('✅ Admin notification sent successfully:', data);
+    console.log('✅ Admin notification sent successfully:', {
+      success: true,
+      response: data,
+      leadInfo: { name: formData.name, company: formData.company }
+    });
     return data;
   } catch (error) {
-    console.error('❌ Exception in admin notification:', error);
+    console.error('❌ Exception in admin notification:', {
+      error: error,
+      message: error.message,
+      leadInfo: { name: formData.name, company: formData.company }
+    });
     throw error;
   }
 };

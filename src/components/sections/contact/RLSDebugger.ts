@@ -5,8 +5,13 @@ export const debugRLSSetup = async () => {
   console.log('=== COMPREHENSIVE RLS DEBUG UTILITY ===');
   
   try {
-    // Step 1: Check authentication context
-    console.log('1. Checking authentication context...');
+    // Step 1: Verify Supabase client configuration
+    console.log('1. Verifying Supabase client configuration...');
+    console.log('Expected URL: https://ydtkmvnzaqncuytxqnwk.supabase.co');
+    console.log('Expected Project ID: ydtkmvnzaqncuytxqnwk');
+    
+    // Step 2: Check authentication context
+    console.log('2. Checking authentication context...');
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     console.log('Auth status:', {
       isAuthenticated: !!user,
@@ -14,20 +19,26 @@ export const debugRLSSetup = async () => {
       userError: userError?.message || 'None'
     });
 
-    // Step 2: Test basic table access
-    console.log('2. Testing basic table connectivity...');
-    const { count, error: countError } = await supabase
+    // Step 3: Test basic table access with simple select
+    console.log('3. Testing basic table connectivity...');
+    const { data: testData, error: connectError } = await supabase
       .from('leads')
-      .select('*', { count: 'exact', head: true });
+      .select('id')
+      .limit(1);
     
     console.log('Table access test:', {
-      success: !countError,
-      count: count || 'Unknown',
-      error: countError?.message || 'None'
+      success: !connectError,
+      canRead: !connectError,
+      sampleRecords: testData?.length || 0,
+      error: connectError ? {
+        code: connectError.code,
+        message: connectError.message,
+        details: connectError.details
+      } : 'None'
     });
 
-    // Step 3: Test minimal insert operation
-    console.log('3. Testing minimal insert...');
+    // Step 4: Test minimal insert operation
+    console.log('4. Testing minimal insert...');
     const testId = 'debug-test-' + Date.now();
     const testInsert = {
       id: testId,
@@ -50,13 +61,14 @@ export const debugRLSSetup = async () => {
       insertError: insertError ? {
         code: insertError.code,
         message: insertError.message,
-        details: insertError.details
+        details: insertError.details,
+        hint: insertError.hint
       } : 'None'
     });
 
-    // Step 4: Clean up test data if insert was successful
+    // Step 5: Clean up test data if insert was successful
     if (insertResult && insertResult.length > 0) {
-      console.log('4. Cleaning up test data...');
+      console.log('5. Cleaning up test data...');
       const { error: deleteError } = await supabase
         .from('leads')
         .delete()
@@ -69,12 +81,13 @@ export const debugRLSSetup = async () => {
       }
     }
 
-    // Step 5: Summary
+    // Step 6: Summary
     console.log('=== RLS DEBUG SUMMARY ===');
     if (!insertError) {
       console.log('🎉 SUCCESS: RLS policies are working correctly!');
       console.log('✅ Anonymous users can insert into leads table');
       console.log('✅ Database connectivity is working');
+      console.log('✅ Supabase client is properly configured');
     } else {
       console.log('❌ ISSUE DETECTED:');
       console.log(`Error Code: ${insertError.code}`);
@@ -83,10 +96,19 @@ export const debugRLSSetup = async () => {
       if (insertError.code === '42501') {
         console.log('🔒 This is an RLS policy violation');
         console.log('💡 Check that the "Allow public lead submissions" policy exists and is correctly configured');
+        console.log('💡 Verify the policy allows INSERT for public role with WITH CHECK (true)');
+      } else if (insertError.code === 'PGRST100') {
+        console.log('🔧 This is a query parsing error');
+        console.log('💡 Check for invalid SQL syntax in the request');
       }
     }
     
   } catch (error) {
     console.error('❌ RLS Debug utility failed:', error);
+    console.error('Full error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
   }
 };

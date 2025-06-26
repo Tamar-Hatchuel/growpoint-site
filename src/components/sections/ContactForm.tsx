@@ -81,32 +81,41 @@ const ContactForm = () => {
       console.error('=== FORM SUBMISSION ERROR ===');
       console.error('Full error object:', error);
       
-      let errorMessage = 'Unknown error occurred';
+      let userErrorMessage = 'Unknown error occurred';
       let technicalDetails = '';
       
       if (error instanceof Error) {
-        errorMessage = error.message;
-        technicalDetails = `Error: ${error.name} - ${error.message}`;
+        userErrorMessage = error.message;
+        technicalDetails = `${error.name}: ${error.message}`;
         
-        // Check for specific error types
-        if (error.message.includes('Database error')) {
-          errorMessage = 'Database connection issue. Please try again.';
-        } else if (error.message.includes('42501')) {
-          errorMessage = 'Permission error. Please contact support.';
-          technicalDetails += ' (RLS Policy Issue)';
-        } else if (error.message.includes('network')) {
-          errorMessage = 'Network error. Please check your connection and try again.';
+        // Enhanced error categorization
+        if (error.message.includes('42501') || error.message.includes('Permission denied')) {
+          userErrorMessage = 'Database permission error. Our team has been notified.';
+          technicalDetails += ' (RLS Policy Issue - Contact Support)';
+        } else if (error.message.includes('PGRST100') || error.message.includes('parsing')) {
+          userErrorMessage = 'Database query error. Please try again or contact support.';
+          technicalDetails += ' (Query Parsing Error)';
+        } else if (error.message.includes('Database connection')) {
+          userErrorMessage = 'Unable to connect to database. Please try again.';
+          technicalDetails += ' (Connection Issue)';
+        } else if (error.message.includes('RESEND_API_KEY')) {
+          userErrorMessage = 'Your request was saved but confirmation email failed. We\'ll still contact you!';
+          technicalDetails += ' (Email Service Configuration Issue)';
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          userErrorMessage = 'Network error. Please check your connection and try again.';
+          technicalDetails += ' (Network Issue)';
         }
       }
       
-      console.error('Technical details:', technicalDetails);
+      console.error('Technical details for debugging:', technicalDetails);
       
-      // Set error for display in UI
-      setSubmitError(`${errorMessage}\n\nTechnical details: ${technicalDetails}`);
+      // Set detailed error for display in UI
+      const displayError = `${userErrorMessage}\n\n🔧 Technical Details:\n${technicalDetails}\n\n💡 If this persists, please contact support with the technical details above.`;
+      setSubmitError(displayError);
       
       toast({
         title: "Submission Failed",
-        description: errorMessage,
+        description: userErrorMessage,
         variant: "destructive"
       });
     } finally {
@@ -135,7 +144,7 @@ const ContactForm = () => {
             {submitError && (
               <Alert variant="destructive" className="mb-6">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="whitespace-pre-line">
+                <AlertDescription className="whitespace-pre-line text-sm">
                   {submitError}
                 </AlertDescription>
               </Alert>

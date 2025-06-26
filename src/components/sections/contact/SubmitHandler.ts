@@ -14,6 +14,13 @@ export const submitLead = async (formData: FormData) => {
   console.log('=== ENHANCED SUBMIT HANDLER ===');
   console.log('Form data received:', formData);
   
+  // Debug: Verify Supabase client configuration
+  console.log('Supabase client config check:', {
+    supabaseUrl: 'https://ydtkmvnzaqncuytxqnwk.supabase.co',
+    hasClient: !!supabase,
+    clientType: typeof supabase
+  });
+  
   // Debug: Check current session and user context
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
   console.log('Session check:', {
@@ -22,22 +29,27 @@ export const submitLead = async (formData: FormData) => {
     userRole: sessionData?.session?.user ? 'authenticated' : 'anonymous/public'
   });
   
-  // Test basic table connectivity
+  // Test basic table connectivity with correct syntax
   console.log('Testing database connectivity...');
   const { data: connectTest, error: connectError } = await supabase
     .from('leads')
-    .select('count(*)')
+    .select('id')
     .limit(1);
   
   console.log('Database connectivity test:', {
     success: !connectError,
-    error: connectError?.message || 'None',
-    data: connectTest
+    error: connectError ? {
+      code: connectError.code,
+      message: connectError.message,
+      details: connectError.details,
+      hint: connectError.hint
+    } : 'None',
+    sampleDataCount: connectTest?.length || 0
   });
   
   if (connectError) {
     console.error('❌ Database connectivity failed:', connectError);
-    throw new Error(`Database connection failed: ${connectError.message}`);
+    throw new Error(`Database connection failed: ${connectError.message} (Code: ${connectError.code})`);
   }
   
   // Prepare insert data with validation
@@ -61,8 +73,8 @@ export const submitLead = async (formData: FormData) => {
     throw new Error('Name and email are required fields');
   }
   
-  // Attempt the database insert
-  console.log('Attempting database insert...');
+  // Attempt the database insert with enhanced logging
+  console.log('Attempting database insert with role: anonymous/public');
   const { data, error } = await supabase
     .from('leads')
     .insert([insertData])
@@ -71,11 +83,12 @@ export const submitLead = async (formData: FormData) => {
   // Enhanced error logging and handling
   if (error) {
     console.error('=== DATABASE INSERT ERROR ===');
-    console.error('Error details:', {
+    console.error('Full error object:', {
       code: error.code,
       message: error.message,
       details: error.details,
-      hint: error.hint
+      hint: error.hint,
+      errorData: error
     });
     
     // Provide specific error messages based on error codes
@@ -83,17 +96,21 @@ export const submitLead = async (formData: FormData) => {
     
     switch (error.code) {
       case '42501':
-        userMessage = 'Permission denied - RLS policy issue';
-        console.error('🔒 RLS POLICY VIOLATION: The insert was blocked by Row Level Security');
+        userMessage = 'Permission denied - RLS policy blocking anonymous inserts';
+        console.error('🔒 RLS POLICY VIOLATION: Insert blocked by Row Level Security');
+        console.error('💡 Check: "Allow public lead submissions" policy exists and allows public role');
         break;
       case '23505':
-        userMessage = 'Duplicate entry - this submission may have already been processed';
+        userMessage = 'Duplicate entry detected';
         break;
       case '23502':
-        userMessage = 'Required field missing';
+        userMessage = 'Required field missing or null constraint violation';
         break;
       case '23514':
-        userMessage = 'Data validation failed';
+        userMessage = 'Data validation failed - check constraint violation';
+        break;
+      case 'PGRST100':
+        userMessage = 'Query parsing error - invalid SQL syntax';
         break;
       default:
         userMessage = `Database error: ${error.message}`;
@@ -107,7 +124,8 @@ export const submitLead = async (formData: FormData) => {
   console.log('Lead successfully saved:', {
     id: data?.[0]?.id,
     timestamp: data?.[0]?.submitted_at,
-    recordCount: data?.length || 0
+    recordCount: data?.length || 0,
+    insertedData: data?.[0]
   });
   
   return data;
