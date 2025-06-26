@@ -9,134 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      employees: {
-        Row: {
-          Department: string | null
-          Email: string | null
-          "Employee ID": number
-          Employee_Name: string | null
-          Permission: string | null
-          Role: string | null
-        }
-        Insert: {
-          Department?: string | null
-          Email?: string | null
-          "Employee ID": number
-          Employee_Name?: string | null
-          Permission?: string | null
-          Role?: string | null
-        }
-        Update: {
-          Department?: string | null
-          Email?: string | null
-          "Employee ID"?: number
-          Employee_Name?: string | null
-          Permission?: string | null
-          Role?: string | null
-        }
-        Relationships: []
-      }
-      feedback_responses: {
-        Row: {
-          cohesion_score: number | null
-          created_at: string
-          department: string
-          employee_id: number | null
-          engagement_score: number | null
-          friction_level: number | null
-          id: string
-          response_date: string
-          responses: Json | null
-          session_id: string | null
-          team_goal: string | null
-          user_department: string | null
-          verbal_q1_comment: string | null
-          verbal_q2_comment: string | null
-          verbal_q3_comment: string | null
-          verbal_q4_comment: string | null
-          verbal_q5_comment: string | null
-          verbal_q6_comment: string | null
-          verbal_q7_comment: string | null
-        }
-        Insert: {
-          cohesion_score?: number | null
-          created_at?: string
-          department: string
-          employee_id?: number | null
-          engagement_score?: number | null
-          friction_level?: number | null
-          id?: string
-          response_date?: string
-          responses?: Json | null
-          session_id?: string | null
-          team_goal?: string | null
-          user_department?: string | null
-          verbal_q1_comment?: string | null
-          verbal_q2_comment?: string | null
-          verbal_q3_comment?: string | null
-          verbal_q4_comment?: string | null
-          verbal_q5_comment?: string | null
-          verbal_q6_comment?: string | null
-          verbal_q7_comment?: string | null
-        }
-        Update: {
-          cohesion_score?: number | null
-          created_at?: string
-          department?: string
-          employee_id?: number | null
-          engagement_score?: number | null
-          friction_level?: number | null
-          id?: string
-          response_date?: string
-          responses?: Json | null
-          session_id?: string | null
-          team_goal?: string | null
-          user_department?: string | null
-          verbal_q1_comment?: string | null
-          verbal_q2_comment?: string | null
-          verbal_q3_comment?: string | null
-          verbal_q4_comment?: string | null
-          verbal_q5_comment?: string | null
-          verbal_q6_comment?: string | null
-          verbal_q7_comment?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "feedback_responses_employee_id_fkey"
-            columns: ["employee_id"]
-            isOneToOne: false
-            referencedRelation: "employees"
-            referencedColumns: ["Employee ID"]
-          },
-        ]
-      }
       leads: {
         Row: {
-          company_name: string
-          full_name: string
+          company_name: string | null
+          full_name: string | null
           id: string
-          submitted_at: string
+          submitted_at: string | null
           team_challenges: string | null
           team_size: string | null
-          work_email: string
+          work_email: string | null
         }
         Insert: {
-          company_name: string
-          full_name: string
-          id?: string
-          submitted_at?: string
+          company_name?: string | null
+          full_name?: string | null
+          id: string
+          submitted_at?: string | null
           team_challenges?: string | null
           team_size?: string | null
-          work_email: string
+          work_email?: string | null
         }
         Update: {
-          company_name?: string
-          full_name?: string
+          company_name?: string | null
+          full_name?: string | null
           id?: string
-          submitted_at?: string
+          submitted_at?: string | null
           team_challenges?: string | null
           team_size?: string | null
-          work_email?: string
+          work_email?: string | null
         }
         Relationships: []
       }
