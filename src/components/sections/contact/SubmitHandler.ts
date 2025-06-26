@@ -20,10 +20,6 @@ export const submitLead = async (formData: FormData) => {
   console.log('Session error:', sessionError);
   console.log('Current user:', sessionData?.session?.user || 'No user (anonymous)');
   
-  // Debug: Check if we're using the correct client configuration
-  console.log('Supabase client URL:', supabase.supabaseUrl);
-  console.log('Supabase client key (first 20 chars):', supabase.supabaseKey.substring(0, 20) + '...');
-  
   // Debug: Test table access first with a simple select
   console.log('Testing table access with SELECT...');
   const { data: testData, error: testError } = await supabase
@@ -33,16 +29,6 @@ export const submitLead = async (formData: FormData) => {
   
   console.log('Test SELECT result:', testData);
   console.log('Test SELECT error:', testError);
-  
-  // Debug: Check RLS policies
-  console.log('Checking RLS policies...');
-  const { data: policies, error: policiesError } = await supabase
-    .rpc('pg_policies')
-    .select('*')
-    .eq('tablename', 'leads');
-    
-  console.log('RLS policies:', policies);
-  console.log('Policies error:', policiesError);
   
   // Prepare the insert data
   const insertData = {
