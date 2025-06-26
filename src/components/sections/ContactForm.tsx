@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle, Bug, AlertCircle } from "lucide-react";
+import { Send, CheckCircle, Bug, AlertCircle, TestTube } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import LeadInputForm from "./contact/LeadInputForm";
-import { submitLead } from "./contact/SubmitHandler";
+import { submitLeadWithEnhancedDebugging } from "./contact/EnhancedSubmitHandler";
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
 import { debugRLSSetup } from "./contact/RLSDebugger";
+import { testAnonymousInsert } from "./contact/SupabaseVerifier";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +28,19 @@ const ContactForm = () => {
     await debugRLSSetup();
   };
 
+  const handleTestAnonymousInsert = async () => {
+    console.log('=== MANUAL ANONYMOUS INSERT TEST ===');
+    const result = await testAnonymousInsert();
+    
+    toast({
+      title: result.success ? "Test Successful!" : "Test Failed",
+      description: result.success 
+        ? "Anonymous insert test passed - RLS is working correctly"
+        : `Test failed: ${result.error?.message || 'Unknown error'}`,
+      variant: result.success ? "default" : "destructive"
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -36,9 +50,9 @@ const ContactForm = () => {
       console.log('=== FORM SUBMISSION STARTING ===');
       console.log('Form data:', formData);
       
-      // Save to Supabase
-      console.log('Step 1: Saving lead to database...');
-      const savedLead = await submitLead(formData);
+      // Use enhanced submit handler with detailed debugging
+      console.log('Step 1: Saving lead to database with enhanced debugging...');
+      const savedLead = await submitLeadWithEnhancedDebugging(formData);
       console.log('✅ Lead saved successfully:', savedLead);
 
       // Send emails (don't block on email failures)
@@ -85,33 +99,21 @@ const ContactForm = () => {
       let technicalDetails = '';
       
       if (error instanceof Error) {
-        userErrorMessage = error.message;
-        technicalDetails = `${error.name}: ${error.message}`;
+        userErrorMessage = error.message.split('\n')[0]; // Get first line for user
+        technicalDetails = error.message;
         
-        // Enhanced error categorization
+        // Check for specific error patterns
         if (error.message.includes('42501') || error.message.includes('Permission denied')) {
           userErrorMessage = 'Database permission error. Our team has been notified.';
-          technicalDetails += ' (RLS Policy Issue - Contact Support)';
-        } else if (error.message.includes('PGRST100') || error.message.includes('parsing')) {
-          userErrorMessage = 'Database query error. Please try again or contact support.';
-          technicalDetails += ' (Query Parsing Error)';
-        } else if (error.message.includes('Database connection')) {
+        } else if (error.message.includes('connection')) {
           userErrorMessage = 'Unable to connect to database. Please try again.';
-          technicalDetails += ' (Connection Issue)';
-        } else if (error.message.includes('RESEND_API_KEY')) {
-          userErrorMessage = 'Your request was saved but confirmation email failed. We\'ll still contact you!';
-          technicalDetails += ' (Email Service Configuration Issue)';
-        } else if (error.message.includes('network') || error.message.includes('fetch')) {
-          userErrorMessage = 'Network error. Please check your connection and try again.';
-          technicalDetails += ' (Network Issue)';
         }
       }
       
       console.error('Technical details for debugging:', technicalDetails);
       
       // Set detailed error for display in UI
-      const displayError = `${userErrorMessage}\n\n🔧 Technical Details:\n${technicalDetails}\n\n💡 If this persists, please contact support with the technical details above.`;
-      setSubmitError(displayError);
+      setSubmitError(technicalDetails);
       
       toast({
         title: "Submission Failed",
@@ -153,7 +155,7 @@ const ContactForm = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <LeadInputForm formData={formData} onChange={handleChange} />
 
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
@@ -176,10 +178,20 @@ const ContactForm = () => {
                   type="button"
                   onClick={handleDebugRLS}
                   variant="outline"
-                  className="px-4 py-3"
+                  className="px-3 py-3"
                   title="Debug RLS Setup"
                 >
-                  <Bug className="w-5 h-5" />
+                  <Bug className="w-4 h-4" />
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={handleTestAnonymousInsert}
+                  variant="outline"
+                  className="px-3 py-3"
+                  title="Test Anonymous Insert"
+                >
+                  <TestTube className="w-4 h-4" />
                 </Button>
               </div>
 
