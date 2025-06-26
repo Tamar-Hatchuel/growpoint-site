@@ -31,6 +31,7 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
+      // First, save to Supabase
       const { error } = await supabase
         .from('leads')
         .insert([
@@ -50,22 +51,66 @@ const ContactForm = () => {
           description: "There was a problem submitting your request. Please try again.",
           variant: "destructive"
         });
-      } else {
-        console.log('Lead successfully saved to Supabase');
-        toast({
-          title: "Demo Request Submitted!",
-          description: "We'll contact you within 24 hours to schedule your personalized demo.",
+        return;
+      }
+
+      console.log('Lead successfully saved to Supabase');
+
+      // Send confirmation email to lead
+      try {
+        const confirmationResponse = await supabase.functions.invoke('send-lead-confirmation', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company
+          }
         });
 
-        // Reset form
-        setFormData({
-          name: '',
-          company: '',
-          email: '',
-          teamSize: '',
-          message: ''
-        });
+        if (confirmationResponse.error) {
+          console.error('Error sending confirmation email:', confirmationResponse.error);
+        } else {
+          console.log('Confirmation email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Error invoking confirmation email function:', emailError);
       }
+
+      // Send admin notification
+      try {
+        const adminResponse = await supabase.functions.invoke('send-admin-notification', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            teamSize: formData.teamSize,
+            message: formData.message
+          }
+        });
+
+        if (adminResponse.error) {
+          console.error('Error sending admin notification:', adminResponse.error);
+        } else {
+          console.log('Admin notification sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Error invoking admin notification function:', emailError);
+      }
+
+      // Show success message
+      toast({
+        title: "Demo Request Submitted!",
+        description: "We'll contact you within 24 hours to schedule your personalized demo. Check your email for confirmation.",
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        company: '',
+        email: '',
+        teamSize: '',
+        message: ''
+      });
+
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
