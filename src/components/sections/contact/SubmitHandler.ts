@@ -11,29 +11,81 @@ interface FormData {
 }
 
 export const submitLead = async (formData: FormData) => {
+  console.log('=== DEBUGGING RLS ISSUE ===');
   console.log('Attempting to submit lead:', formData);
   
-  // Save to Supabase with generated ID
+  // Debug: Check current session and user
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  console.log('Current session:', sessionData);
+  console.log('Session error:', sessionError);
+  console.log('Current user:', sessionData?.session?.user || 'No user (anonymous)');
+  
+  // Debug: Check if we're using the correct client configuration
+  console.log('Supabase client URL:', supabase.supabaseUrl);
+  console.log('Supabase client key (first 20 chars):', supabase.supabaseKey.substring(0, 20) + '...');
+  
+  // Debug: Test table access first with a simple select
+  console.log('Testing table access with SELECT...');
+  const { data: testData, error: testError } = await supabase
+    .from('leads')
+    .select('id')
+    .limit(1);
+  
+  console.log('Test SELECT result:', testData);
+  console.log('Test SELECT error:', testError);
+  
+  // Debug: Check RLS policies
+  console.log('Checking RLS policies...');
+  const { data: policies, error: policiesError } = await supabase
+    .rpc('pg_policies')
+    .select('*')
+    .eq('tablename', 'leads');
+    
+  console.log('RLS policies:', policies);
+  console.log('Policies error:', policiesError);
+  
+  // Prepare the insert data
+  const insertData = {
+    id: uuidv4(), // Generate a UUID for the required id field
+    full_name: formData.name,
+    company_name: formData.company,
+    work_email: formData.email,
+    team_size: formData.teamSize,
+    team_challenges: formData.message,
+    submitted_at: new Date().toISOString()
+  };
+  
+  console.log('Insert data prepared:', insertData);
+  
+  // Try the insert with detailed error logging
+  console.log('Attempting INSERT into leads table...');
   const { data, error } = await supabase
     .from('leads')
-    .insert([
-      {
-        id: uuidv4(), // Generate a UUID for the required id field
-        full_name: formData.name,
-        company_name: formData.company,
-        work_email: formData.email,
-        team_size: formData.teamSize,
-        team_challenges: formData.message,
-        submitted_at: new Date().toISOString()
-      }
-    ])
+    .insert([insertData])
     .select(); // Add select to get the inserted data
 
+  console.log('INSERT result data:', data);
+  console.log('INSERT error (full):', error);
+  
   if (error) {
-    console.error('Supabase error details:', error);
+    console.error('=== DETAILED ERROR ANALYSIS ===');
+    console.error('Error code:', error.code);
+    console.error('Error message:', error.message);
+    console.error('Error details:', error.details);
+    console.error('Error hint:', error.hint);
+    
+    // Try to provide more specific error information
+    if (error.code === '42501') {
+      console.error('RLS VIOLATION DETECTED:');
+      console.error('- This means the current role does not have permission to insert');
+      console.error('- Current role appears to be:', sessionData?.session?.user ? 'authenticated' : 'anon/public');
+      console.error('- Check if policies are correctly applied to the right role');
+    }
+    
     throw new Error(`Database error: ${error.message} (Code: ${error.code})`);
   }
 
+  console.log('=== SUCCESS ===');
   console.log('Lead successfully saved to Supabase:', data);
   return data;
 };

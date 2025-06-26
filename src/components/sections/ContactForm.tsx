@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Bug } from "lucide-react";
 import LeadInputForm from "./contact/LeadInputForm";
 import { submitLead } from "./contact/SubmitHandler";
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
+import { debugRLSSetup } from "./contact/RLSDebugger";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -19,11 +20,17 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
+  const handleDebugRLS = async () => {
+    console.log('=== MANUAL RLS DEBUG TRIGGERED ===');
+    await debugRLSSetup();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
+      console.log('=== FORM SUBMISSION STARTING ===');
       console.log('Starting form submission...');
       
       // Save to Supabase
@@ -63,6 +70,7 @@ const ContactForm = () => {
       });
 
     } catch (error) {
+      console.error('=== FORM SUBMISSION ERROR ===');
       console.error('Form submission error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       
@@ -97,23 +105,35 @@ const ContactForm = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <LeadInputForm formData={formData} onChange={handleChange} />
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-3 text-lg"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-5 h-5 mr-2" />
-                    Request Demo
-                  </>
-                )}
-              </Button>
+              <div className="flex gap-4">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-3 text-lg"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Request Demo
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={handleDebugRLS}
+                  variant="outline"
+                  className="px-4 py-3"
+                  title="Debug RLS Setup"
+                >
+                  <Bug className="w-5 h-5" />
+                </Button>
+              </div>
 
               <p className="text-sm text-gray-600 text-center">
                 We'll contact you within 24 hours to schedule your personalized demo.
