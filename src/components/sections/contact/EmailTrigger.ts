@@ -10,35 +10,11 @@ interface FormData {
 }
 
 export const sendConfirmationEmail = async (formData: FormData) => {
+  console.log('=== SENDING CONFIRMATION EMAIL ===');
+  console.log('Email target:', formData.email);
+  
   try {
-    console.log('Sending confirmation email to:', formData.email);
-    
-    const response = await supabase.functions.invoke('send-lead-confirmation', {
-      body: {
-        name: formData.name,
-        email: formData.email,
-        company: formData.company
-      }
-    });
-
-    if (response.error) {
-      console.error('Error sending confirmation email:', response.error);
-      throw new Error(`Confirmation email failed: ${response.error.message}`);
-    }
-
-    console.log('Confirmation email sent successfully:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error invoking confirmation email function:', error);
-    throw error; // Re-throw to let the caller handle it
-  }
-};
-
-export const sendAdminNotification = async (formData: FormData) => {
-  try {
-    console.log('Sending admin notification for lead:', formData.name);
-    
-    const response = await supabase.functions.invoke('send-admin-notification', {
+    const { data, error } = await supabase.functions.invoke('send-lead-confirmation', {
       body: {
         name: formData.name,
         email: formData.email,
@@ -48,15 +24,43 @@ export const sendAdminNotification = async (formData: FormData) => {
       }
     });
 
-    if (response.error) {
-      console.error('Error sending admin notification:', response.error);
-      throw new Error(`Admin notification failed: ${response.error.message}`);
+    if (error) {
+      console.error('❌ Confirmation email failed:', error);
+      throw new Error(`Confirmation email failed: ${error.message}`);
     }
 
-    console.log('Admin notification sent successfully:', response.data);
-    return response.data;
+    console.log('✅ Confirmation email sent successfully:', data);
+    return data;
   } catch (error) {
-    console.error('Error invoking admin notification function:', error);
-    throw error; // Re-throw to let the caller handle it
+    console.error('❌ Exception in confirmation email:', error);
+    throw error;
+  }
+};
+
+export const sendAdminNotification = async (formData: FormData) => {
+  console.log('=== SENDING ADMIN NOTIFICATION ===');
+  console.log('Notification for lead:', formData.name);
+  
+  try {
+    const { data, error } = await supabase.functions.invoke('send-admin-notification', {
+      body: {
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        teamSize: formData.teamSize,
+        message: formData.message
+      }
+    });
+
+    if (error) {
+      console.error('❌ Admin notification failed:', error);
+      throw new Error(`Admin notification failed: ${error.message}`);
+    }
+
+    console.log('✅ Admin notification sent successfully:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Exception in admin notification:', error);
+    throw error;
   }
 };

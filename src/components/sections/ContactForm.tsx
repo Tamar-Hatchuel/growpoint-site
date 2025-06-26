@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle, Bug } from "lucide-react";
+import { Send, CheckCircle, Bug, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import LeadInputForm from "./contact/LeadInputForm";
 import { submitLead } from "./contact/SubmitHandler";
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
@@ -18,6 +19,7 @@ const ContactForm = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleDebugRLS = async () => {
@@ -28,36 +30,42 @@ const ContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       console.log('=== FORM SUBMISSION STARTING ===');
-      console.log('Starting form submission...');
+      console.log('Form data:', formData);
       
       // Save to Supabase
+      console.log('Step 1: Saving lead to database...');
       const savedLead = await submitLead(formData);
-      console.log('Lead saved successfully:', savedLead);
+      console.log('✅ Lead saved successfully:', savedLead);
 
       // Send emails (don't block on email failures)
-      console.log('Sending emails...');
+      console.log('Step 2: Sending emails...');
       const emailResults = await Promise.allSettled([
         sendConfirmationEmail(formData),
         sendAdminNotification(formData)
       ]);
 
-      // Log email results
+      // Log email results with detailed status
+      let emailWarnings = [];
       emailResults.forEach((result, index) => {
         const emailType = index === 0 ? 'confirmation' : 'admin notification';
         if (result.status === 'fulfilled') {
-          console.log(`${emailType} email sent successfully:`, result.value);
+          console.log(`✅ ${emailType} email sent successfully:`, result.value);
         } else {
-          console.error(`${emailType} email failed:`, result.reason);
+          console.error(`❌ ${emailType} email failed:`, result.reason);
+          emailWarnings.push(`${emailType} email failed: ${result.reason?.message || 'Unknown error'}`);
         }
       });
 
       // Show success message
       toast({
         title: "Demo Request Submitted!",
-        description: "We'll contact you within 24 hours to schedule your personalized demo. Check your email for confirmation.",
+        description: emailWarnings.length > 0 
+          ? `Request saved successfully! ${emailWarnings.join(', ')} - We'll still contact you within 24 hours.`
+          : "We'll contact you within 24 hours to schedule your personalized demo. Check your email for confirmation.",
       });
 
       // Reset form
@@ -71,12 +79,34 @@ const ContactForm = () => {
 
     } catch (error) {
       console.error('=== FORM SUBMISSION ERROR ===');
-      console.error('Form submission error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Full error object:', error);
+      
+      let errorMessage = 'Unknown error occurred';
+      let technicalDetails = '';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        technicalDetails = `Error: ${error.name} - ${error.message}`;
+        
+        // Check for specific error types
+        if (error.message.includes('Database error')) {
+          errorMessage = 'Database connection issue. Please try again.';
+        } else if (error.message.includes('42501')) {
+          errorMessage = 'Permission error. Please contact support.';
+          technicalDetails += ' (RLS Policy Issue)';
+        } else if (error.message.includes('network')) {
+          errorMessage = 'Network error. Please check your connection and try again.';
+        }
+      }
+      
+      console.error('Technical details:', technicalDetails);
+      
+      // Set error for display in UI
+      setSubmitError(`${errorMessage}\n\nTechnical details: ${technicalDetails}`);
       
       toast({
-        title: "Submission Error",
-        description: `There was a problem submitting your request: ${errorMessage}. Please try again.`,
+        title: "Submission Failed",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
@@ -102,6 +132,15 @@ const ContactForm = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {submitError && (
+              <Alert variant="destructive" className="mb-6">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription className="whitespace-pre-line">
+                  {submitError}
+                </AlertDescription>
+              </Alert>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-6">
               <LeadInputForm formData={formData} onChange={handleChange} />
 

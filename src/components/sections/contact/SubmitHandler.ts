@@ -11,67 +11,104 @@ interface FormData {
 }
 
 export const submitLead = async (formData: FormData) => {
-  console.log('=== DEBUGGING RLS ISSUE ===');
-  console.log('Attempting to submit lead:', formData);
+  console.log('=== ENHANCED SUBMIT HANDLER ===');
+  console.log('Form data received:', formData);
   
-  // Debug: Check current session and user
+  // Debug: Check current session and user context
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-  console.log('Current session:', sessionData);
-  console.log('Session error:', sessionError);
-  console.log('Current user:', sessionData?.session?.user || 'No user (anonymous)');
+  console.log('Session check:', {
+    hasSession: !!sessionData?.session,
+    sessionError: sessionError?.message || 'None',
+    userRole: sessionData?.session?.user ? 'authenticated' : 'anonymous/public'
+  });
   
-  // Debug: Test table access first with a simple select
-  console.log('Testing table access with SELECT...');
-  const { data: testData, error: testError } = await supabase
+  // Test basic table connectivity
+  console.log('Testing database connectivity...');
+  const { data: connectTest, error: connectError } = await supabase
     .from('leads')
-    .select('id')
+    .select('count(*)')
     .limit(1);
   
-  console.log('Test SELECT result:', testData);
-  console.log('Test SELECT error:', testError);
+  console.log('Database connectivity test:', {
+    success: !connectError,
+    error: connectError?.message || 'None',
+    data: connectTest
+  });
   
-  // Prepare the insert data
+  if (connectError) {
+    console.error('❌ Database connectivity failed:', connectError);
+    throw new Error(`Database connection failed: ${connectError.message}`);
+  }
+  
+  // Prepare insert data with validation
   const insertData = {
-    id: uuidv4(), // Generate a UUID for the required id field
-    full_name: formData.name,
-    company_name: formData.company,
-    work_email: formData.email,
-    team_size: formData.teamSize,
-    team_challenges: formData.message,
+    id: uuidv4(),
+    full_name: formData.name?.trim() || null,
+    company_name: formData.company?.trim() || null,
+    work_email: formData.email?.trim() || null,
+    team_size: formData.teamSize || null,
+    team_challenges: formData.message?.trim() || null,
     submitted_at: new Date().toISOString()
   };
   
-  console.log('Insert data prepared:', insertData);
+  console.log('Insert data prepared:', {
+    ...insertData,
+    id: insertData.id.substring(0, 8) + '...' // Truncate for logging
+  });
   
-  // Try the insert with detailed error logging
-  console.log('Attempting INSERT into leads table...');
+  // Validate required fields
+  if (!insertData.full_name || !insertData.work_email) {
+    throw new Error('Name and email are required fields');
+  }
+  
+  // Attempt the database insert
+  console.log('Attempting database insert...');
   const { data, error } = await supabase
     .from('leads')
     .insert([insertData])
-    .select(); // Add select to get the inserted data
+    .select();
 
-  console.log('INSERT result data:', data);
-  console.log('INSERT error (full):', error);
-  
+  // Enhanced error logging and handling
   if (error) {
-    console.error('=== DETAILED ERROR ANALYSIS ===');
-    console.error('Error code:', error.code);
-    console.error('Error message:', error.message);
-    console.error('Error details:', error.details);
-    console.error('Error hint:', error.hint);
+    console.error('=== DATABASE INSERT ERROR ===');
+    console.error('Error details:', {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint
+    });
     
-    // Try to provide more specific error information
-    if (error.code === '42501') {
-      console.error('RLS VIOLATION DETECTED:');
-      console.error('- This means the current role does not have permission to insert');
-      console.error('- Current role appears to be:', sessionData?.session?.user ? 'authenticated' : 'anon/public');
-      console.error('- Check if policies are correctly applied to the right role');
+    // Provide specific error messages based on error codes
+    let userMessage = 'Database error occurred';
+    
+    switch (error.code) {
+      case '42501':
+        userMessage = 'Permission denied - RLS policy issue';
+        console.error('🔒 RLS POLICY VIOLATION: The insert was blocked by Row Level Security');
+        break;
+      case '23505':
+        userMessage = 'Duplicate entry - this submission may have already been processed';
+        break;
+      case '23502':
+        userMessage = 'Required field missing';
+        break;
+      case '23514':
+        userMessage = 'Data validation failed';
+        break;
+      default:
+        userMessage = `Database error: ${error.message}`;
     }
     
-    throw new Error(`Database error: ${error.message} (Code: ${error.code})`);
+    throw new Error(`${userMessage} (Code: ${error.code})`);
   }
 
-  console.log('=== SUCCESS ===');
-  console.log('Lead successfully saved to Supabase:', data);
+  // Success logging
+  console.log('=== INSERT SUCCESS ===');
+  console.log('Lead successfully saved:', {
+    id: data?.[0]?.id,
+    timestamp: data?.[0]?.submitted_at,
+    recordCount: data?.length || 0
+  });
+  
   return data;
 };
