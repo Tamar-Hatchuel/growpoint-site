@@ -3,14 +3,11 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle, Bug, AlertCircle, TestTube } from "lucide-react";
+import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import LeadInputForm from "./contact/LeadInputForm";
 import { submitLeadWithEnhancedDebugging } from "./contact/EnhancedSubmitHandler";
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
-import { debugRLSSetup } from "./contact/RLSDebugger";
-import { testAnonymousInsert } from "./contact/SupabaseVerifier";
-import DatabaseConnectionTester from "./contact/DatabaseConnectionTester";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -23,24 +20,6 @@ const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { toast } = useToast();
-
-  const handleDebugRLS = async () => {
-    console.log('=== MANUAL RLS DEBUG TRIGGERED ===');
-    await debugRLSSetup();
-  };
-
-  const handleTestAnonymousInsert = async () => {
-    console.log('=== MANUAL ANONYMOUS INSERT TEST ===');
-    const result = await testAnonymousInsert();
-    
-    toast({
-      title: result.success ? "Test Successful!" : "Test Failed",
-      description: result.success 
-        ? "Anonymous insert test passed - RLS is working correctly"
-        : `Test failed: ${result.error?.message || 'Unknown error'}`,
-      variant: result.success ? "default" : "destructive"
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,45 +135,23 @@ const ContactForm = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <LeadInputForm formData={formData} onChange={handleChange} />
 
-              <div className="flex gap-2">
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-3 text-lg"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Request Demo
-                    </>
-                  )}
-                </Button>
-
-                <Button
-                  type="button"
-                  onClick={handleDebugRLS}
-                  variant="outline"
-                  className="px-3 py-3"
-                  title="Debug RLS Setup"
-                >
-                  <Bug className="w-4 h-4" />
-                </Button>
-
-                <Button
-                  type="button"
-                  onClick={handleTestAnonymousInsert}
-                  variant="outline"
-                  className="px-3 py-3"
-                  title="Test Anonymous Insert"
-                >
-                  <TestTube className="w-4 h-4" />
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-3 text-lg"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5 mr-2" />
+                    Request Demo
+                  </>
+                )}
+              </Button>
 
               <p className="text-sm text-gray-600 text-center">
                 We'll contact you within 24 hours to schedule your personalized demo.
@@ -202,9 +159,6 @@ const ContactForm = () => {
             </form>
           </CardContent>
         </Card>
-
-        {/* Database Connection Tester - New debugging component */}
-        <DatabaseConnectionTester />
 
         {/* Benefits Section */}
         <Card className="mt-8 bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
