@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, XCircle, TestTube, Database, AlertCircle } from "lucide-react";
+import { CheckCircle, XCircle, TestTube, Database, AlertCircle, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { testAnonymousInsert, testEndToEndFormSubmission, verifySupabaseConnection } from "./SupabaseVerifier";
 
@@ -16,13 +16,14 @@ const DatabaseConnectionTester = () => {
     setIsRunning(true);
     setTestResults(null);
     
-    console.log('=== RUNNING COMPREHENSIVE DATABASE TESTS ===');
+    console.log('=== RUNNING COMPREHENSIVE DATABASE TESTS (POST-RLS-FIX) ===');
     
     try {
       // Step 1: Verify connection
       const connectionResult = verifySupabaseConnection();
       
-      // Step 2: Test anonymous insert
+      // Step 2: Test anonymous insert with new RLS policy
+      console.log('Testing with newly applied RLS policy...');
       const anonymousInsertResult = await testAnonymousInsert();
       
       // Step 3: Test end-to-end form submission
@@ -32,16 +33,19 @@ const DatabaseConnectionTester = () => {
         connection: connectionResult,
         anonymousInsert: anonymousInsertResult,
         endToEnd: endToEndResult,
-        overallSuccess: anonymousInsertResult.success && endToEndResult.success
+        overallSuccess: anonymousInsertResult.success && endToEndResult.success,
+        rlsPolicyFixed: anonymousInsertResult.success
       };
       
       setTestResults(results);
       
       toast({
-        title: results.overallSuccess ? "All Tests Passed!" : "Some Tests Failed",
+        title: results.overallSuccess ? "🎉 All Tests Passed!" : "⚠️ Some Tests Failed",
         description: results.overallSuccess 
-          ? "Database connection and RLS policies are working correctly"
-          : "Check console for detailed error information",
+          ? "RLS policy fix successful! Contact form should now work correctly."
+          : results.rlsPolicyFixed 
+            ? "RLS is working but there may be other issues. Check console for details."
+            : "RLS policy may need time to propagate. Try again in a moment.",
         variant: results.overallSuccess ? "default" : "destructive"
       });
       
@@ -58,32 +62,32 @@ const DatabaseConnectionTester = () => {
   };
 
   return (
-    <Card className="mt-6 bg-white/80 backdrop-blur-sm border-blue-200">
+    <Card className="mt-6 bg-white/80 backdrop-blur-sm border-green-200">
       <CardHeader>
-        <CardTitle className="text-blue-700 flex items-center gap-2">
+        <CardTitle className="text-green-700 flex items-center gap-2">
           <Database className="w-5 h-5" />
           Database Connection Tester
+          <RefreshCw className="w-4 h-4 text-green-600" />
         </CardTitle>
         <CardDescription>
-          Test database connectivity, RLS policies, and form submission flow
+          Test database connectivity and verify RLS policy fix for contact form submissions
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button
           onClick={runConnectionTest}
           disabled={isRunning}
-          className="w-full"
-          variant="outline"
+          className="w-full bg-green-600 hover:bg-green-700"
         >
           {isRunning ? (
             <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2" />
-              Running Tests...
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              Testing RLS Policy Fix...
             </>
           ) : (
             <>
               <TestTube className="w-4 h-4 mr-2" />
-              Run Database Tests
+              Test RLS Policy Fix
             </>
           )}
         </Button>
@@ -93,7 +97,7 @@ const DatabaseConnectionTester = () => {
             <Alert variant={testResults.overallSuccess ? "default" : "destructive"}>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                <strong>Overall Status:</strong> {testResults.overallSuccess ? "All tests passed" : "Some tests failed"}
+                <strong>Overall Status:</strong> {testResults.overallSuccess ? "✅ All tests passed - Contact form ready!" : "⚠️ Some tests failed"}
               </AlertDescription>
             </Alert>
             
@@ -104,7 +108,7 @@ const DatabaseConnectionTester = () => {
                 ) : (
                   <XCircle className="w-4 h-4 text-red-600" />
                 )}
-                <span>Supabase Connection: {testResults.connection.isConfiguredCorrectly ? "OK" : "Failed"}</span>
+                <span>Supabase Connection: {testResults.connection.isConfiguredCorrectly ? "✅ OK" : "❌ Failed"}</span>
               </div>
               
               <div className="flex items-center gap-2 text-sm">
@@ -113,7 +117,7 @@ const DatabaseConnectionTester = () => {
                 ) : (
                   <XCircle className="w-4 h-4 text-red-600" />
                 )}
-                <span>Anonymous Insert: {testResults.anonymousInsert.success ? "OK" : "Failed"}</span>
+                <span>RLS Policy (anon INSERT): {testResults.anonymousInsert.success ? "✅ FIXED" : "❌ Still blocked"}</span>
               </div>
               
               <div className="flex items-center gap-2 text-sm">
@@ -122,9 +126,18 @@ const DatabaseConnectionTester = () => {
                 ) : (
                   <XCircle className="w-4 h-4 text-red-600" />
                 )}
-                <span>End-to-End Test: {testResults.endToEnd.success ? "OK" : "Failed"}</span>
+                <span>End-to-End Form Test: {testResults.endToEnd.success ? "✅ Working" : "❌ Failed"}</span>
               </div>
             </div>
+            
+            {testResults.rlsPolicyFixed && (
+              <Alert>
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription className="text-sm text-green-700">
+                  🎉 <strong>RLS Policy Successfully Fixed!</strong> The contact form should now accept submissions from anonymous users.
+                </AlertDescription>
+              </Alert>
+            )}
             
             {!testResults.overallSuccess && (
               <Alert variant="destructive">
