@@ -21,18 +21,18 @@ export const submitLeadWithEnhancedDebugging = async (formData: FormData) => {
     throw new Error('Supabase configuration mismatch - check URL and project ID');
   }
   
-  // Step 2: Prepare insert payload with detailed logging
+  // Step 2: Prepare insert payload - let Supabase handle created_at automatically
   const insertPayload = {
     id: uuidv4(),
     full_name: formData.name?.trim() || null,
     company_name: formData.company?.trim() || null,
     work_email: formData.email?.trim() || null,
     team_size: formData.teamSize || null,
-    team_challenges: formData.message?.trim() || null,
-    submitted_at: new Date().toISOString()
+    team_challenges: formData.message?.trim() || null
+    // Removed submitted_at - let Supabase auto-populate created_at
   };
   
-  console.log('Insert payload prepared:', {
+  console.log('Insert payload prepared (Supabase will auto-populate created_at):', {
     ...insertPayload,
     id: insertPayload.id.substring(0, 8) + '...'
   });
@@ -102,7 +102,7 @@ export const submitLeadWithEnhancedDebugging = async (formData: FormData) => {
     console.log('=== INSERT SUCCESSFUL ===');
     console.log('Lead successfully saved:', {
       id: data?.[0]?.id,
-      timestamp: data?.[0]?.submitted_at,
+      created_at: data?.[0]?.created_at, // Now using Supabase auto-populated timestamp
       recordCount: data?.length || 0
     });
     

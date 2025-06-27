@@ -11,31 +11,31 @@ export type Database = {
     Tables: {
       leads: {
         Row: {
-          company_name: string | null
-          full_name: string | null
+          company_name: string
+          created_at: string | null
+          full_name: string
           id: string
-          submitted_at: string | null
           team_challenges: string | null
-          team_size: string | null
-          work_email: string | null
+          team_size: string
+          work_email: string
         }
         Insert: {
-          company_name?: string | null
-          full_name?: string | null
+          company_name?: string
+          created_at?: string | null
+          full_name?: string
           id?: string
-          submitted_at?: string | null
           team_challenges?: string | null
-          team_size?: string | null
-          work_email?: string | null
+          team_size?: string
+          work_email?: string
         }
         Update: {
-          company_name?: string | null
-          full_name?: string | null
+          company_name?: string
+          created_at?: string | null
+          full_name?: string
           id?: string
-          submitted_at?: string | null
           team_challenges?: string | null
-          team_size?: string | null
-          work_email?: string | null
+          team_size?: string
+          work_email?: string
         }
         Relationships: []
       }

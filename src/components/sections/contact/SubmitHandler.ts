@@ -52,18 +52,18 @@ export const submitLead = async (formData: FormData) => {
     throw new Error(`Database connection failed: ${connectError.message} (Code: ${connectError.code})`);
   }
   
-  // Prepare insert data with validation
+  // Prepare insert data with validation - let Supabase handle created_at
   const insertData = {
     id: uuidv4(),
     full_name: formData.name?.trim() || null,
     company_name: formData.company?.trim() || null,
     work_email: formData.email?.trim() || null,
     team_size: formData.teamSize || null,
-    team_challenges: formData.message?.trim() || null,
-    submitted_at: new Date().toISOString()
+    team_challenges: formData.message?.trim() || null
+    // Removed submitted_at - Supabase will auto-populate created_at
   };
   
-  console.log('Insert data prepared:', {
+  console.log('Insert data prepared (Supabase will auto-populate created_at):', {
     ...insertData,
     id: insertData.id.substring(0, 8) + '...' // Truncate for logging
   });
@@ -123,7 +123,7 @@ export const submitLead = async (formData: FormData) => {
   console.log('=== INSERT SUCCESS ===');
   console.log('Lead successfully saved:', {
     id: data?.[0]?.id,
-    timestamp: data?.[0]?.submitted_at,
+    created_at: data?.[0]?.created_at, // Now using Supabase auto-populated timestamp
     recordCount: data?.length || 0,
     insertedData: data?.[0]
   });

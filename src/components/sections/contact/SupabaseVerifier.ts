@@ -39,11 +39,11 @@ export const testAnonymousInsert = async () => {
     company_name: 'Test Company',
     work_email: 'test@example.com',
     team_size: '1-5',
-    team_challenges: 'Testing RLS functionality',
-    submitted_at: new Date().toISOString()
+    team_challenges: 'Testing RLS functionality'
+    // Removed submitted_at - let Supabase auto-populate created_at
   };
   
-  console.log('Test payload:', testPayload);
+  console.log('Test payload (Supabase will auto-populate created_at):', testPayload);
   
   try {
     const { data, error } = await supabase
@@ -84,11 +84,11 @@ export const testEndToEndFormSubmission = async () => {
     company_name: 'GrowPoint',
     work_email: 'e2e@growpoint.app',
     team_size: '1-10',
-    team_challenges: 'Testing end-to-end flow',
-    submitted_at: new Date().toISOString()
+    team_challenges: 'Testing end-to-end flow'
+    // Removed submitted_at - let Supabase auto-populate created_at
   };
   
-  console.log('Testing with form data:', testFormData);
+  console.log('Testing with form data (Supabase will auto-populate created_at):', testFormData);
   
   try {
     // Test the exact same flow as the form uses
