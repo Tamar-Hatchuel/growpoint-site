@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,20 +38,19 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Brand color variables */
+    --brand-primary: #FFCDB2;
+    --brand-accent: #FFB4A2;
+    --brand-secondary: #E5989B;
+    --brand-dark: #B5828C;
   }
 
   .dark {
@@ -99,5 +99,44 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: var(--brand-primary);
+  }
+
+  /* Brand-specific styling */
+  h1, h2, .heading {
+    @apply text-[#B5828C];
+  }
+
+  .brand-button {
+    @apply bg-[#FFB4A2] text-white hover:bg-[#E5989B] transition-all duration-300;
+  }
+
+  .brand-accent {
+    @apply text-[#E5989B];
+  }
+
+  /* Smooth transitions for interactive elements */
+  a, button {
+    @apply transition-all duration-300;
+  }
+
+  /* Card shadows with brand colors */
+  .brand-shadow {
+    box-shadow: 0 4px 20px rgba(181, 130, 140, 0.15);
+  }
+
+  .brand-shadow-lg {
+    box-shadow: 0 8px 30px rgba(181, 130, 140, 0.2);
+  }
+}
+
+/* Mobile responsiveness adjustments */
+@media (max-width: 768px) {
+  .pricing-grid {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .brand-button {
+    @apply px-4 py-2 text-sm;
   }
 }

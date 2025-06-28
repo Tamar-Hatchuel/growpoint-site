@@ -10,12 +10,20 @@ const Pricing = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-[#B5828C] mb-6">Choose Your Plan</h1>
-          <p className="text-xl text-[#B5828C] max-w-3xl mx-auto">
+          <p className="text-xl text-[#E5989B] max-w-3xl mx-auto">
             Select the perfect plan for your team size and collaboration needs. All plans include our core team dynamics features with varying levels of support and customization.
           </p>
         </div>
 
-        <PricingPlans />
+        {/* Animated Grid Background Wrapper */}
+        <div className="relative flex justify-center items-center w-full mt-20 scale-90">
+          {/* Background Layer */}
+          <div className="absolute inset-0 -z-10">
+            <div className="h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-30 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+          </div>
+          
+          <PricingPlans />
+        </div>
       </div>
       
       <TimedPopup

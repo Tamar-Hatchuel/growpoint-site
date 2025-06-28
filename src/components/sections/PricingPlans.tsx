@@ -93,13 +93,13 @@ const PricingPlans = () => {
     <div className="container mx-auto px-4">
       {/* Pricing Toggle */}
       <div className="flex items-center justify-center mb-12">
-        <span className={`mr-3 ${!isYearly ? 'text-[#B5828C] font-semibold' : 'text-gray-600'}`}>
+        <span className={`mr-3 transition-colors ${!isYearly ? 'text-[#B5828C] font-semibold' : 'text-[#E5989B]'}`}>
           Monthly
         </span>
         <button
           onClick={() => setIsYearly(!isYearly)}
           className={`relative w-16 h-8 rounded-full transition-colors ${
-            isYearly ? 'bg-[#B5828C]' : 'bg-gray-300'
+            isYearly ? 'bg-[#FFB4A2]' : 'bg-gray-300'
           }`}
         >
           <div
@@ -108,7 +108,7 @@ const PricingPlans = () => {
             }`}
           />
         </button>
-        <span className={`ml-3 ${isYearly ? 'text-[#B5828C] font-semibold' : 'text-gray-600'}`}>
+        <span className={`ml-3 transition-colors ${isYearly ? 'text-[#B5828C] font-semibold' : 'text-[#E5989B]'}`}>
           Yearly
           <span className="ml-1 text-sm text-green-600">(Save 20%)</span>
         </span>
@@ -119,15 +119,15 @@ const PricingPlans = () => {
         {tiers.map((tier) => (
           <Card
             key={tier.id}
-            className={`relative bg-white/90 backdrop-blur-sm border-2 hover:shadow-xl transition-all ${
+            className={`relative bg-white/90 backdrop-blur-sm border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 ${
               tier.popular 
-                ? 'border-[#B5828C] scale-105 shadow-lg' 
-                : 'border-[#FFB4A2] hover:border-[#E5989B]'
+                ? 'border-[#FFB4A2] scale-105 shadow-lg shadow-[#B5828C]/20' 
+                : 'border-[#E5989B] hover:border-[#FFB4A2] shadow-md shadow-[#B5828C]/10'
             }`}
           >
             {tier.popular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#B5828C] text-white px-4 py-1 rounded-full text-sm font-medium">
+                <span className="bg-[#FFB4A2] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
                   Most Popular
                 </span>
               </div>
@@ -135,7 +135,7 @@ const PricingPlans = () => {
 
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-[#B5828C] text-xl">{tier.name}</CardTitle>
-              <CardDescription className="text-sm text-gray-600">{tier.subtitle}</CardDescription>
+              <CardDescription className="text-sm text-[#E5989B]">{tier.subtitle}</CardDescription>
               <div className="mt-4">
                 <span className="text-4xl font-bold text-[#B5828C]">
                   {typeof tier.price.monthly === 'number' 
@@ -144,27 +144,27 @@ const PricingPlans = () => {
                   }
                 </span>
                 {typeof tier.price.monthly === 'number' && (
-                  <span className="text-gray-600 ml-1">/month</span>
+                  <span className="text-[#E5989B] ml-1">/month</span>
                 )}
               </div>
-              <p className="text-sm text-gray-600 mt-2">{tier.description}</p>
+              <p className="text-sm text-[#E5989B] mt-2">{tier.description}</p>
             </CardHeader>
 
             <CardContent className="space-y-4">
               <ul className="space-y-3">
                 {tier.features.map((feature, index) => (
                   <li key={index} className="flex items-center text-sm">
-                    <Check className="w-4 h-4 text-green-600 mr-3 flex-shrink-0" />
+                    <Check className="w-4 h-4 text-[#FFB4A2] mr-3 flex-shrink-0" />
                     <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <Button
-                className={`w-full mt-6 ${
+                className={`w-full mt-6 transition-all duration-300 ${
                   tier.popular
-                    ? 'bg-[#B5828C] hover:bg-[#B5828C]/90 text-white'
-                    : 'bg-white text-[#B5828C] border-2 border-[#B5828C] hover:bg-[#B5828C] hover:text-white'
+                    ? 'bg-[#FFB4A2] hover:bg-[#E5989B] text-white shadow-md hover:shadow-lg'
+                    : 'bg-white text-[#FFB4A2] border-2 border-[#FFB4A2] hover:bg-[#FFB4A2] hover:text-white shadow-sm hover:shadow-md'
                 }`}
               >
                 {tier.cta}
@@ -176,11 +176,11 @@ const PricingPlans = () => {
 
       {/* Additional Info */}
       <div className="text-center">
-        <p className="text-[#B5828C] mb-4">
+        <p className="text-[#B5828C] mb-4 font-medium">
           All plans include a 14-day free trial. No credit card required.
         </p>
-        <p className="text-sm text-gray-600">
-          Need a custom solution? <a href="/contact" className="text-[#B5828C] underline">Contact our sales team</a>
+        <p className="text-sm text-[#E5989B]">
+          Need a custom solution? <a href="/contact" className="text-[#FFB4A2] underline hover:text-[#E5989B] transition-colors">Contact our sales team</a>
         </p>
       </div>
     </div>
