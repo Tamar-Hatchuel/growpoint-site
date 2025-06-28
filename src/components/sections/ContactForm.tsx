@@ -30,31 +30,31 @@ const ContactForm = () => {
       console.log('=== FORM SUBMISSION STARTING ===');
       console.log('Form data:', formData);
       
-      // Use enhanced submit handler with detailed debugging
-      console.log('Step 1: Saving lead to database with enhanced debugging...');
+      // Use enhanced submit handler with security improvements
+      console.log('Step 1: Saving lead to database...');
       const savedLead = await submitLeadWithEnhancedDebugging(formData);
       console.log('✅ Lead saved successfully:', savedLead);
 
-      // Send emails (don't block on email failures)
+      // Send emails with improved error handling
       console.log('Step 2: Sending emails...');
       const emailResults = await Promise.allSettled([
         sendConfirmationEmail(formData),
         sendAdminNotification(formData)
       ]);
 
-      // Log email results with detailed status
+      // Process email results
       let emailWarnings = [];
       emailResults.forEach((result, index) => {
         const emailType = index === 0 ? 'confirmation' : 'admin notification';
         if (result.status === 'fulfilled') {
-          console.log(`✅ ${emailType} email sent successfully:`, result.value);
+          console.log(`✅ ${emailType} email sent successfully`);
         } else {
           console.error(`❌ ${emailType} email failed:`, result.reason);
-          emailWarnings.push(`${emailType} email failed: ${result.reason?.message || 'Unknown error'}`);
+          emailWarnings.push(`${emailType} email delivery delayed`);
         }
       });
 
-      // Show success message
+      // Show success message with sanitized feedback
       toast({
         title: "Demo Request Submitted!",
         description: emailWarnings.length > 0 
@@ -73,31 +73,18 @@ const ContactForm = () => {
 
     } catch (error) {
       console.error('=== FORM SUBMISSION ERROR ===');
-      console.error('Full error object:', error);
+      console.error('Full error details:', error);
       
-      let userErrorMessage = 'Unknown error occurred';
-      let technicalDetails = '';
+      // Show user-friendly error message
+      const userMessage = error instanceof Error 
+        ? error.message 
+        : 'Something went wrong. Please try again.';
       
-      if (error instanceof Error) {
-        userErrorMessage = error.message.split('\n')[0]; // Get first line for user
-        technicalDetails = error.message;
-        
-        // Check for specific error patterns
-        if (error.message.includes('42501') || error.message.includes('Permission denied')) {
-          userErrorMessage = 'Database permission error. Our team has been notified.';
-        } else if (error.message.includes('connection')) {
-          userErrorMessage = 'Unable to connect to database. Please try again.';
-        }
-      }
-      
-      console.error('Technical details for debugging:', technicalDetails);
-      
-      // Set detailed error for display in UI
-      setSubmitError(technicalDetails);
+      setSubmitError(userMessage);
       
       toast({
         title: "Submission Failed",
-        description: userErrorMessage,
+        description: userMessage,
         variant: "destructive"
       });
     } finally {
@@ -126,7 +113,7 @@ const ContactForm = () => {
             {submitError && (
               <Alert variant="destructive" className="mb-6">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="whitespace-pre-line text-sm">
+                <AlertDescription>
                   {submitError}
                 </AlertDescription>
               </Alert>

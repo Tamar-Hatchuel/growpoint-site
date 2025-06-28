@@ -18,103 +18,92 @@ export const submitLeadWithEnhancedDebugging = async (formData: FormData) => {
   // Step 1: Verify Supabase connection
   const connectionCheck = verifySupabaseConnection();
   if (!connectionCheck.isConfiguredCorrectly) {
-    throw new Error('Supabase configuration mismatch - check URL and project ID');
+    throw new Error('Configuration error - please try again');
   }
   
-  // Step 2: Prepare insert payload - let Supabase handle created_at automatically
+  // Step 2: Input validation
+  if (!formData.name?.trim()) {
+    throw new Error('Name is required');
+  }
+  
+  if (!formData.email?.trim()) {
+    throw new Error('Email is required');
+  }
+  
+  // Basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email.trim())) {
+    throw new Error('Please enter a valid email address');
+  }
+  
+  if (!formData.company?.trim()) {
+    throw new Error('Company name is required');
+  }
+  
+  // Step 3: Prepare insert payload with sanitized data
   const insertPayload = {
     id: uuidv4(),
-    full_name: formData.name?.trim() || null,
-    company_name: formData.company?.trim() || null,
-    work_email: formData.email?.trim() || null,
+    full_name: formData.name.trim().substring(0, 255), // Limit length
+    company_name: formData.company.trim().substring(0, 255),
+    work_email: formData.email.trim().toLowerCase().substring(0, 255),
     team_size: formData.teamSize || null,
-    team_challenges: formData.message?.trim() || null
-    // Removed submitted_at - let Supabase auto-populate created_at
+    team_challenges: formData.message?.trim().substring(0, 1000) || null // Limit message length
   };
   
-  console.log('Insert payload prepared (Supabase will auto-populate created_at):', {
+  console.log('Insert payload prepared:', {
     ...insertPayload,
     id: insertPayload.id.substring(0, 8) + '...'
   });
   
-  // Step 3: Validate required fields
-  if (!insertPayload.full_name || !insertPayload.work_email) {
-    throw new Error('Name and email are required fields');
-  }
-  
-  // Step 4: Log the exact request being made
-  console.log('Making Supabase insert request:', {
-    table: 'leads',
-    operation: 'INSERT',
-    role: 'anon',
-    rlsPoliciesExpected: ['allow_public_lead_inserts'],
-    payload: insertPayload
-  });
-  
   try {
-    // Step 5: Execute insert with detailed error capture
+    // Step 4: Execute insert with clean error handling
     const { data, error } = await supabase
       .from('leads')
       .insert([insertPayload])
       .select();
     
     if (error) {
-      console.error('=== SUPABASE INSERT ERROR DETAILS ===');
-      console.error('Error object:', {
+      console.error('Database error details:', {
         code: error.code,
         message: error.message,
-        details: error.details,
-        hint: error.hint,
-        fullError: error
+        details: error.details
       });
       
-      // Enhanced error analysis
-      let userFriendlyMessage = 'Database error occurred';
-      let technicalContext = '';
-      
+      // Return user-friendly error messages
       switch (error.code) {
         case '42501':
-          userFriendlyMessage = 'Permission denied - RLS policy issue';
-          technicalContext = 'The anon role cannot INSERT into leads table. Check RLS policies.';
-          console.error('🔒 RLS POLICY VIOLATION - anon role blocked from INSERT');
-          break;
+          throw new Error('Permission error - please try again or contact support');
         case '23505':
-          userFriendlyMessage = 'Duplicate entry detected';
-          technicalContext = 'Unique constraint violation, likely duplicate ID';
-          break;
+          throw new Error('This request has already been submitted');
         case '23502':
-          userFriendlyMessage = 'Required field missing';
-          technicalContext = 'NOT NULL constraint violation on required column';
-          break;
+          throw new Error('Please fill in all required fields');
         case '23514':
-          userFriendlyMessage = 'Data validation failed';
-          technicalContext = 'CHECK constraint violation';
-          break;
+          throw new Error('Invalid data format - please check your entries');
         default:
-          userFriendlyMessage = error.message;
-          technicalContext = `Code: ${error.code}`;
+          throw new Error('Unable to submit request - please try again');
       }
-      
-      throw new Error(`${userFriendlyMessage}\n\nTechnical: ${technicalContext}\nFull error: ${JSON.stringify(error)}`);
     }
     
-    // Step 6: Log successful insertion
     console.log('=== INSERT SUCCESSFUL ===');
     console.log('Lead successfully saved:', {
       id: data?.[0]?.id,
-      created_at: data?.[0]?.created_at, // Now using Supabase auto-populated timestamp
+      created_at: data?.[0]?.created_at,
       recordCount: data?.length || 0
     });
     
     return data;
     
   } catch (error) {
-    console.error('=== EXCEPTION DURING INSERT ===');
-    console.error('Exception details:', {
+    console.error('Exception during insert:', {
       name: error.name,
-      message: error.message,
-      stack: error.stack
+      message: error.message
     });
+    
+    // Re-throw with sanitized message
+    if (error.message.includes('fetch')) {
+      throw new Error('Network error - please check your connection and try again');
+    }
+    
     throw error;
   }
 };
