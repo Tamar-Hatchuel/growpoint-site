@@ -23,21 +23,21 @@ const ProcessSteps = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16">How It Works</h2>
+      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up">How It Works</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {steps.map((step, index) => (
           <div key={index} className="text-center relative">
-            <Card className="bg-[#FFCDB2] border-2 border-[#E5989B] hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-3xl h-full group">
+            <Card className="brand-card card-hover h-full group animate-fade-in-up" style={{ animationDelay: `${index * 0.2}s` }}>
               <CardHeader className="pb-4">
-                <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-white/30 transition-colors">
+                <div className="w-20 h-20 bg-white/30 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-white/40 transition-colors">
                   <step.icon className="w-10 h-10 text-[#E5989B]" />
                 </div>
-                <CardTitle className="text-[#B5828C] text-2xl font-bold">
+                <CardTitle className="text-[#B5828C] text-xl font-semibold">
                   Step {index + 1}: {step.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-[#B5828C] text-lg leading-relaxed">{step.description}</p>
+                <p className="text-[#22223B] text-base leading-relaxed">{step.description}</p>
               </CardContent>
             </Card>
             {index < steps.length - 1 && (

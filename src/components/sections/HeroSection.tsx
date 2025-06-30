@@ -12,7 +12,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="text-center mb-16">
           {/* Centered Logo and Brand */}
-          <div className="flex flex-col items-center justify-center mb-12">
+          <div className="flex flex-col items-center justify-center mb-12 animate-fade-in-up">
             <img 
               src="/lovable-uploads/43b0b874-e122-40e2-b660-a589c42b2368.png" 
               alt="GrowPoint Logo" 
@@ -25,30 +25,20 @@ const HeroSection = () => {
           </div>
           
           {/* Description */}
-          <p className="text-xl md:text-2xl text-[#B5828C] max-w-4xl mx-auto leading-relaxed mb-12">
+          <p className="text-xl md:text-2xl text-[#B5828C] max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up animate-delay-200">
             GrowPoint is a SaaS platform that helps organizations understand and improve team dynamics 
             through anonymous feedback, AI insights, and real-time analytics.
           </p>
 
-          {/* Main CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/demo">
+          {/* Main CTA - Only Request Demo */}
+          <div className="flex justify-center animate-fade-in-up animate-delay-400">
+            <Link to="/contact">
               <Button 
                 size="lg" 
-                className="bg-[#FFCDB2] hover:bg-[#E5989B] text-[#B5828C] font-semibold px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation"
+                className="brand-button px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation"
               >
-                Start Your Survey
+                Request Demo
                 <ArrowRight className="w-6 h-6 ml-2" />
-              </Button>
-            </Link>
-            
-            <Link to="/demo">
-              <Button 
-                variant="outline"
-                size="lg" 
-                className="border-2 border-[#E5989B] text-[#B5828C] hover:bg-[#E5989B] hover:text-white font-semibold px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation"
-              >
-                Watch Free Demo
               </Button>
             </Link>
           </div>

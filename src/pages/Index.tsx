@@ -22,7 +22,7 @@ const Index = () => {
         message="Start your free trial today!"
         buttonText="Try Free Demo"
         buttonLink="/demo"
-        delay={2000}
+        delay={5000}
         sessionKey="home-popup-shown"
       />
     </PageLayout>

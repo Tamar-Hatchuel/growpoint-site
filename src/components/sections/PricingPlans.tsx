@@ -1,187 +1,110 @@
 
-import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const PricingPlans = () => {
-  const [isYearly, setIsYearly] = useState(false);
-
-  const tiers = [
+  const plans = [
     {
-      id: "basic",
-      name: "Basic",
-      price: {
-        monthly: 129,
-        yearly: 99,
-      },
-      description: "Core features, email support",
-      subtitle: "2–50 employees",
+      name: "Starter",
+      price: "$29",
+      period: "/month",
+      description: "Perfect for small teams getting started",
       features: [
-        "Anonymous feedback collection",
-        "Basic team analytics",
-        "Email notifications",
-        "Monthly reports",
+        "Up to 10 team members",
+        "Basic sociometric surveys", 
+        "Real-time feedback dashboard",
         "Email support",
+        "Basic analytics"
       ],
       cta: "Get Started",
-      popular: false,
+      link: "/contact",
+      popular: false
     },
     {
-      id: "standard",
-      name: "Standard",
-      price: {
-        monthly: 299,
-        yearly: 239,
-      },
-      description: "Analytics, onboarding tools",
-      subtitle: "51–200 employees",
+      name: "Standard", 
+      price: "$79",
+      period: "/month",
+      description: "Ideal for growing teams and departments",
       features: [
-        "Everything in Basic",
-        "Advanced analytics dashboard",
-        "Custom onboarding flows",
-        "Weekly insights",
-        "Priority email support",
-        "Team collaboration tools",
-      ],
-      cta: "Get Started",
-      popular: true,
-    },
-    {
-      id: "pro",
-      name: "Pro",
-      price: {
-        monthly: 599,
-        yearly: 479,
-      },
-      description: "Advanced insights, priority support",
-      subtitle: "201–500 employees",
-      features: [
-        "Everything in Standard",
+        "Up to 50 team members",
+        "Advanced survey templates",
         "AI-powered insights",
-        "Real-time notifications",
-        "Custom integrations",
-        "Phone support",
-        "Dedicated onboarding",
+        "Team collaboration metrics",
+        "Priority support",
+        "Custom reports",
+        "Integration support"
       ],
       cta: "Get Started",
-      popular: false,
+      link: "/contact", 
+      popular: true
     },
     {
-      id: "enterprise",
       name: "Enterprise",
-      price: {
-        monthly: "Custom",
-        yearly: "Custom",
-      },
-      description: "Dedicated manager, integrations",
-      subtitle: "501+ employees",
+      price: "Custom",
+      period: "",
+      description: "For large organizations with complex needs",
       features: [
-        "Everything in Pro",
+        "Unlimited team members",
+        "Custom survey design",
+        "Advanced AI analytics",
+        "Multi-department insights",
         "Dedicated account manager",
         "Custom integrations",
-        "API access",
-        "SLA guarantees",
-        "On-premise deployment options",
+        "SLA guarantee",
+        "On-site training"
       ],
       cta: "Contact Us",
-      popular: false,
-    },
+      link: "/contact",
+      popular: false
+    }
   ];
 
   return (
     <div className="container mx-auto px-4">
-      {/* Pricing Toggle */}
-      <div className="flex items-center justify-center mb-16">
-        <span className={`mr-4 text-xl transition-colors ${!isYearly ? 'text-[#B5828C] font-bold' : 'text-[#E5989B]'}`}>
-          Monthly
-        </span>
-        <button
-          onClick={() => setIsYearly(!isYearly)}
-          className={`relative w-20 h-10 rounded-full transition-colors ${
-            isYearly ? 'bg-[#FFCDB2]' : 'bg-gray-300'
-          }`}
-        >
-          <div
-            className={`absolute top-1 w-8 h-8 bg-white rounded-full transition-transform shadow-lg ${
-              isYearly ? 'translate-x-10' : 'translate-x-1'
-            }`}
-          />
-        </button>
-        <span className={`ml-4 text-xl transition-colors ${isYearly ? 'text-[#B5828C] font-bold' : 'text-[#E5989B]'}`}>
-          Yearly
-          <span className="ml-2 text-base text-green-600 font-semibold">(Save 20%)</span>
-        </span>
-      </div>
-
-      {/* Pricing Cards */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-20">
-        {tiers.map((tier) => (
-          <Card
-            key={tier.id}
-            className={`relative bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:shadow-2xl transition-all duration-300 hover:scale-102 ${
-              tier.popular 
-                ? 'scale-105 shadow-2xl ring-4 ring-[#FFB4A2] ring-opacity-50' 
-                : 'hover:border-[#FFB4A2] shadow-lg'
-            }`}
-          >
-            {tier.popular && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#FFB4A2] text-[#B5828C] px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {plans.map((plan, index) => (
+          <div key={index} className="relative animate-fade-in-up" style={{ animationDelay: `${index * 0.2}s` }}>
+            {plan.popular && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <span className="bg-[#FFB4A2] text-[#B5828C] px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                   Most Popular
                 </span>
               </div>
             )}
-
-            <CardHeader className="text-center pb-6">
-              <CardTitle className="text-[#B5828C] text-2xl font-bold">{tier.name}</CardTitle>
-              <CardDescription className="text-[#E5989B] font-medium">{tier.subtitle}</CardDescription>
-              <div className="mt-6">
-                <span className="text-5xl font-bold text-[#B5828C]">
-                  {typeof tier.price.monthly === 'number' 
-                    ? `$${isYearly ? tier.price.yearly : tier.price.monthly}`
-                    : tier.price.monthly
-                  }
-                </span>
-                {typeof tier.price.monthly === 'number' && (
-                  <span className="text-[#E5989B] ml-1 text-lg">/month</span>
-                )}
-              </div>
-              <p className="text-[#B5828C] mt-2 font-medium">{tier.description}</p>
-            </CardHeader>
-
-            <CardContent className="space-y-6">
-              <ul className="space-y-4">
-                {tier.features.map((feature, index) => (
-                  <li key={index} className="flex items-center">
-                    <Check className="w-5 h-5 text-[#E5989B] mr-3 flex-shrink-0" />
-                    <span className="text-[#B5828C]">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+            
+            <Card className="brand-card pricing-card-hover h-full flex flex-col relative border-2 border-[#E5989B] rounded-3xl">
+              <CardHeader className="text-center pb-6 pt-8">
+                <CardTitle className="text-[#B5828C] text-2xl font-bold mb-2">{plan.name}</CardTitle>
+                <div className="mb-4">
+                  <span className="text-[#B5828C] text-4xl font-bold">{plan.price}</span>
+                  <span className="text-[#E5989B] text-lg">{plan.period}</span>
+                </div>
+                <CardDescription className="text-[#E5989B] text-base">{plan.description}</CardDescription>
+              </CardHeader>
               
-              <Button
-                className={`w-full mt-8 font-bold text-lg py-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl min-h-[60px] ${
-                  tier.popular
-                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-[#B5828C] border-2 border-[#E5989B]'
-                    : 'bg-[#FFCDB2] text-[#B5828C] border-2 border-[#E5989B] hover:bg-[#E5989B] hover:text-white'
-                }`}
-              >
-                {tier.cta}
-              </Button>
-            </CardContent>
-          </Card>
+              <CardContent className="flex-1 flex flex-col">
+                <ul className="space-y-4 mb-8 flex-1">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <Check className="w-5 h-5 text-[#E5989B] mr-3 mt-0.5 flex-shrink-0" />
+                      <span className="text-[#22223B] text-base leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <Link to={plan.link} className="w-full">
+                  <Button 
+                    className="w-full brand-button text-lg py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {plan.cta}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         ))}
-      </div>
-
-      {/* Additional Info */}
-      <div className="text-center">
-        <p className="text-[#B5828C] mb-6 font-bold text-xl">
-          All plans include a 14-day free trial. No credit card required.
-        </p>
-        <p className="text-[#E5989B] text-lg">
-          Need a custom solution? <a href="/contact" className="text-[#B5828C] underline hover:text-[#E5989B] transition-colors font-semibold">Contact our sales team</a>
-        </p>
       </div>
     </div>
   );

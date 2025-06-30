@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -108,8 +109,26 @@
     @apply text-[#B5828C];
   }
 
+  /* Updated brand card styling with gradient */
+  .brand-card {
+    background: linear-gradient(135deg, #F1F4F5 0%, #FFFFFF 100%);
+    @apply border-2 border-[#E5989B] rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300;
+  }
+
+  .brand-card h3, .brand-card .card-title {
+    @apply text-[#B5828C] text-xl font-semibold;
+  }
+
+  .brand-card p, .brand-card .card-content {
+    @apply text-[#22223B] text-base leading-relaxed;
+  }
+
+  .brand-card .icon {
+    @apply text-[#E5989B];
+  }
+
   .brand-button {
-    @apply bg-[#FFCDB2] text-[#B5828C] hover:bg-[#E5989B] hover:text-white transition-all duration-300 rounded-full shadow-lg hover:shadow-xl font-semibold;
+    @apply bg-[#FFCDB2] text-[#B5828C] hover:bg-[#E5989B] hover:text-white transition-all duration-300 rounded-full shadow-lg hover:shadow-xl font-semibold px-8 py-3 min-h-[48px];
   }
 
   .brand-accent {
@@ -132,6 +151,15 @@
 
   .brand-shadow-xl {
     box-shadow: 0 12px 40px rgba(181, 130, 140, 0.25);
+  }
+
+  /* Card hover animations */
+  .card-hover {
+    @apply hover:scale-[1.02] hover:shadow-xl transition-all duration-300;
+  }
+
+  .pricing-card-hover {
+    @apply hover:scale-[1.03] hover:shadow-2xl transition-all duration-300;
   }
 }
 
@@ -159,12 +187,36 @@
   .scale-105 {
     transform: scale(1.05);
   }
+
+  /* Fade in animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 0.4s;
+  }
 }
 
 /* Enhanced mobile responsiveness */
 @media (max-width: 768px) {
   .pricing-grid {
-    @apply grid-cols-1 gap-4;
+    @apply grid-cols-1 gap-6;
   }
   
   .brand-button {
@@ -176,5 +228,9 @@
     touch-action: manipulation;
     min-height: 48px;
     min-width: 48px;
+  }
+
+  .brand-card {
+    @apply mb-6;
   }
 }

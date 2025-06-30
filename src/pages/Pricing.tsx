@@ -8,7 +8,7 @@ const Pricing = () => {
     <PageLayout>
       <div className="py-16">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <h1 className="text-5xl font-bold text-[#B5828C] mb-6">Choose Your Plan</h1>
           <p className="text-xl text-[#E5989B] max-w-3xl mx-auto">
             Select the perfect plan for your team size and collaboration needs. All plans include our core team dynamics features with varying levels of support and customization.
@@ -16,7 +16,7 @@ const Pricing = () => {
         </div>
 
         {/* Animated Grid Background Wrapper */}
-        <div className="relative flex justify-center items-center w-full mt-20 scale-90">
+        <div className="relative flex justify-center items-center w-full mt-20">
           {/* Background Layer */}
           <div className="absolute inset-0 -z-10">
             <div className="h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-30 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
@@ -30,7 +30,7 @@ const Pricing = () => {
         message="Not sure which plan fits your team?"
         buttonText="Contact Us for Help"
         buttonLink="/contact"
-        delay={4000}
+        delay={5000}
         sessionKey="pricing-popup-shown"
       />
     </PageLayout>

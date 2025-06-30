@@ -23,12 +23,13 @@ const TestimonialsSection = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16">What Our Users Say</h2>
+      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up">What Our Users Say</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {testimonials.map((testimonial, index) => (
           <Card 
             key={index} 
-            className="bg-[#FFCDB2] border-2 border-[#E5989B] hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-3xl"
+            className="brand-card card-hover animate-fade-in-up"
+            style={{ animationDelay: `${index * 0.2}s` }}
           >
             <CardContent className="pt-8">
               <div className="flex items-center mb-6">
@@ -36,10 +37,10 @@ const TestimonialsSection = () => {
                   <Star key={i} className="w-5 h-5 fill-[#E5989B] text-[#E5989B]" />
                 ))}
               </div>
-              <p className="text-[#B5828C] mb-6 italic text-lg leading-relaxed">"{testimonial.quote}"</p>
+              <p className="text-[#22223B] mb-6 italic text-base leading-relaxed">"{testimonial.quote}"</p>
               <div>
-                <p className="font-bold text-[#B5828C] text-lg">{testimonial.author}</p>
-                <p className="text-[#B5828C] opacity-80">{testimonial.role}</p>
+                <p className="font-semibold text-[#B5828C] text-base">{testimonial.author}</p>
+                <p className="text-[#E5989B] text-sm">{testimonial.role}</p>
               </div>
             </CardContent>
           </Card>
