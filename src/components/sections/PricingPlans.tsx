@@ -92,79 +92,79 @@ const PricingPlans = () => {
   return (
     <div className="container mx-auto px-4">
       {/* Pricing Toggle */}
-      <div className="flex items-center justify-center mb-12">
-        <span className={`mr-3 transition-colors ${!isYearly ? 'text-[#B5828C] font-semibold' : 'text-[#E5989B]'}`}>
+      <div className="flex items-center justify-center mb-16">
+        <span className={`mr-4 text-xl transition-colors ${!isYearly ? 'text-[#B5828C] font-bold' : 'text-[#E5989B]'}`}>
           Monthly
         </span>
         <button
           onClick={() => setIsYearly(!isYearly)}
-          className={`relative w-16 h-8 rounded-full transition-colors ${
+          className={`relative w-20 h-10 rounded-full transition-colors ${
             isYearly ? 'bg-[#FFCDB2]' : 'bg-gray-300'
           }`}
         >
           <div
-            className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-transform ${
-              isYearly ? 'translate-x-9' : 'translate-x-1'
+            className={`absolute top-1 w-8 h-8 bg-white rounded-full transition-transform shadow-lg ${
+              isYearly ? 'translate-x-10' : 'translate-x-1'
             }`}
           />
         </button>
-        <span className={`ml-3 transition-colors ${isYearly ? 'text-[#B5828C] font-semibold' : 'text-[#E5989B]'}`}>
+        <span className={`ml-4 text-xl transition-colors ${isYearly ? 'text-[#B5828C] font-bold' : 'text-[#E5989B]'}`}>
           Yearly
-          <span className="ml-1 text-sm text-green-600">(Save 20%)</span>
+          <span className="ml-2 text-base text-green-600 font-semibold">(Save 20%)</span>
         </span>
       </div>
 
       {/* Pricing Cards */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-16">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-20">
         {tiers.map((tier) => (
           <Card
             key={tier.id}
-            className={`relative bg-[#F1F4F5] backdrop-blur-sm border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+            className={`relative bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:shadow-2xl transition-all duration-300 hover:scale-102 ${
               tier.popular 
-                ? 'border-[#FFCDB2] scale-105 shadow-lg shadow-[#B5828C]/20' 
-                : 'border-[#E5989B] hover:border-[#FFCDB2] shadow-md shadow-[#B5828C]/10'
+                ? 'scale-105 shadow-2xl ring-4 ring-[#FFB4A2] ring-opacity-50' 
+                : 'hover:border-[#FFB4A2] shadow-lg'
             }`}
           >
             {tier.popular && (
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#FFCDB2] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-[#FFB4A2] text-[#B5828C] px-6 py-2 rounded-full text-sm font-bold shadow-lg">
                   Most Popular
                 </span>
               </div>
             )}
 
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-[#B5828C] text-xl">{tier.name}</CardTitle>
-              <CardDescription className="text-sm text-[#E5989B]">{tier.subtitle}</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-[#B5828C]">
+            <CardHeader className="text-center pb-6">
+              <CardTitle className="text-[#B5828C] text-2xl font-bold">{tier.name}</CardTitle>
+              <CardDescription className="text-[#E5989B] font-medium">{tier.subtitle}</CardDescription>
+              <div className="mt-6">
+                <span className="text-5xl font-bold text-[#B5828C]">
                   {typeof tier.price.monthly === 'number' 
                     ? `$${isYearly ? tier.price.yearly : tier.price.monthly}`
                     : tier.price.monthly
                   }
                 </span>
                 {typeof tier.price.monthly === 'number' && (
-                  <span className="text-[#E5989B] ml-1">/month</span>
+                  <span className="text-[#E5989B] ml-1 text-lg">/month</span>
                 )}
               </div>
-              <p className="text-sm text-[#E5989B] mt-2">{tier.description}</p>
+              <p className="text-[#B5828C] mt-2 font-medium">{tier.description}</p>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              <ul className="space-y-3">
+            <CardContent className="space-y-6">
+              <ul className="space-y-4">
                 {tier.features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm">
-                    <Check className="w-4 h-4 text-[#E5989B] mr-3 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
+                  <li key={index} className="flex items-center">
+                    <Check className="w-5 h-5 text-[#E5989B] mr-3 flex-shrink-0" />
+                    <span className="text-[#B5828C]">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <Button
-                className={`w-full mt-6 transition-all duration-300 ${
+                className={`w-full mt-8 font-bold text-lg py-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl min-h-[60px] ${
                   tier.popular
-                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-white shadow-md hover:shadow-lg'
-                    : 'bg-white text-[#FFCDB2] border-2 border-[#FFCDB2] hover:bg-[#FFCDB2] hover:text-white shadow-sm hover:shadow-md'
+                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-[#B5828C] border-2 border-[#E5989B]'
+                    : 'bg-[#FFCDB2] text-[#B5828C] border-2 border-[#E5989B] hover:bg-[#E5989B] hover:text-white'
                 }`}
               >
                 {tier.cta}
@@ -176,11 +176,11 @@ const PricingPlans = () => {
 
       {/* Additional Info */}
       <div className="text-center">
-        <p className="text-[#B5828C] mb-4 font-medium">
+        <p className="text-[#B5828C] mb-6 font-bold text-xl">
           All plans include a 14-day free trial. No credit card required.
         </p>
-        <p className="text-sm text-[#E5989B]">
-          Need a custom solution? <a href="/contact" className="text-[#FFCDB2] underline hover:text-[#E5989B] transition-colors">Contact our sales team</a>
+        <p className="text-[#E5989B] text-lg">
+          Need a custom solution? <a href="/contact" className="text-[#B5828C] underline hover:text-[#E5989B] transition-colors font-semibold">Contact our sales team</a>
         </p>
       </div>
     </div>

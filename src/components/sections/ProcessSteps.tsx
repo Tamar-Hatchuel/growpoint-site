@@ -22,27 +22,27 @@ const ProcessSteps = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 mb-16">
-      <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">How It Works</h2>
+    <div className="container mx-auto px-4">
+      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16">How It Works</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {steps.map((step, index) => (
           <div key={index} className="text-center relative">
-            <Card className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B] hover:shadow-lg transition-shadow h-full">
-              <CardHeader>
-                <div className="w-16 h-16 bg-[#B5828C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <step.icon className="w-8 h-8 text-[#E5989B]" />
+            <Card className="bg-[#FFCDB2] border-2 border-[#E5989B] hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-3xl h-full group">
+              <CardHeader className="pb-4">
+                <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-white/30 transition-colors">
+                  <step.icon className="w-10 h-10 text-[#E5989B]" />
                 </div>
-                <CardTitle className="text-[#B5828C]">
+                <CardTitle className="text-[#B5828C] text-2xl font-bold">
                   Step {index + 1}: {step.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700">{step.description}</p>
+                <p className="text-[#B5828C] text-lg leading-relaxed">{step.description}</p>
               </CardContent>
             </Card>
             {index < steps.length - 1 && (
               <div className="hidden md:block absolute top-1/2 -right-4 transform translate-x-1/2 -translate-y-1/2 z-10">
-                <ArrowRight className="w-6 h-6 text-[#E5989B]" />
+                <ArrowRight className="w-8 h-8 text-[#E5989B]" />
               </div>
             )}
           </div>

@@ -31,21 +31,21 @@ const About = () => {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-20">
         {/* Mission Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-[#B5828C] mb-6">About GrowPoint</h1>
-          <p className="text-2xl text-[#B5828C] font-medium mb-8">"Empowering teams through better feedback."</p>
+        <div className="text-center mb-20">
+          <h1 className="text-5xl md:text-6xl font-bold text-[#B5828C] mb-8">About GrowPoint</h1>
+          <p className="text-2xl md:text-3xl text-[#B5828C] font-medium mb-12">"Empowering teams through better feedback."</p>
         </div>
 
         {/* Problem & Solution */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">The Problem</CardTitle>
+        <div className="grid md:grid-cols-2 gap-8 mb-20">
+          <Card className="bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:scale-103 hover:shadow-xl transition-all duration-300 group">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-[#B5828C] text-2xl font-bold">The Problem</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700">
+              <p className="text-[#B5828C] text-lg leading-relaxed">
                 Current feedback systems are outdated and miss real-time team dynamics. Teams struggle with 
                 hidden friction, unclear communication, and lack of actionable insights into what actually 
                 drives performance and collaboration.
@@ -53,12 +53,12 @@ const About = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-            <CardHeader>
-              <CardTitle className="text-[#B5828C]">Our Solution</CardTitle>
+          <Card className="bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:scale-103 hover:shadow-xl transition-all duration-300 group">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-[#B5828C] text-2xl font-bold">Our Solution</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700">
+              <p className="text-[#B5828C] text-lg leading-relaxed">
                 Sociometric tests, live dashboards, and AI insights that provide real-time visibility into 
                 team dynamics. Get anonymous feedback, data-driven recommendations, and actionable strategies 
                 to improve collaboration and performance.
@@ -68,17 +68,22 @@ const About = () => {
         </div>
 
         {/* Audience Cards */}
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Who We Serve</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16">Who We Serve</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {audienceCards.map((audience, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-sm border-[#FFB4A2] hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center">
-                  <audience.icon className="w-8 h-8 text-[#B5828C] mx-auto mb-3" />
-                  <CardTitle className="text-[#B5828C] text-lg">{audience.title}</CardTitle>
+              <Card 
+                key={index} 
+                className="bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:scale-103 hover:shadow-xl transition-all duration-300 group"
+              >
+                <CardHeader className="text-center pb-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                    <audience.icon className="w-8 h-8 text-[#E5989B]" />
+                  </div>
+                  <CardTitle className="text-[#B5828C] text-xl font-bold">{audience.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-700 text-center">{audience.description}</p>
+                  <p className="text-[#B5828C] text-center leading-relaxed">{audience.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -87,15 +92,18 @@ const About = () => {
 
         {/* Persona Cards */}
         <div>
-          <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Key Personas</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16">Key Personas</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {personas.map((persona, index) => (
-              <Card key={index} className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
-                <CardHeader>
-                  <CardTitle className="text-[#B5828C]">{persona.role} "{persona.name}"</CardTitle>
+              <Card 
+                key={index} 
+                className="bg-[#FFCDB2] border-2 border-[#E5989B] rounded-3xl hover:scale-103 hover:shadow-xl transition-all duration-300 group"
+              >
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-[#B5828C] text-2xl font-bold">{persona.role} "{persona.name}"</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700">{persona.description}</p>
+                  <p className="text-[#B5828C] text-lg leading-relaxed">{persona.description}</p>
                 </CardContent>
               </Card>
             ))}

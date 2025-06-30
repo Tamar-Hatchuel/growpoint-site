@@ -10,11 +10,13 @@ import TimedPopup from "@/components/ui/TimedPopup";
 const Index = () => {
   return (
     <PageLayout>
-      <HeroSection />
-      <BenefitsSection />
-      <ProcessSteps />
-      <TestimonialsSection />
-      <CTASection />
+      <div className="space-y-20">
+        <HeroSection />
+        <BenefitsSection />
+        <ProcessSteps />
+        <TestimonialsSection />
+        <CTASection />
+      </div>
       
       <TimedPopup
         message="Start your free trial today!"
