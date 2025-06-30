@@ -26,11 +26,11 @@ const TestimonialsSection = () => {
       <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">What Our Users Say</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {testimonials.map((testimonial, index) => (
-          <Card key={index} className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
+          <Card key={index} className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B]">
             <CardContent className="pt-6">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <Star key={i} className="w-4 h-4 fill-[#E5989B] text-[#E5989B]" />
                 ))}
               </div>
               <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>

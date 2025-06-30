@@ -46,11 +46,13 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    /* Brand color variables */
+    /* Updated brand color variables to match app */
+    --brand-hero: #FFD6C9;
     --brand-primary: #FFCDB2;
-    --brand-accent: #FFB4A2;
-    --brand-secondary: #E5989B;
+    --brand-accent: #E5989B;
     --brand-dark: #B5828C;
+    --brand-card: #F1F4F5;
+    --brand-white: #FFFFFF;
   }
 
   .dark {
@@ -99,16 +101,16 @@
 
   body {
     @apply bg-background text-foreground;
-    background-color: var(--brand-primary);
+    background: linear-gradient(135deg, #FFD6C9 0%, #FFFFFF 100%);
   }
 
-  /* Brand-specific styling */
+  /* Brand-specific styling with exact app colors */
   h1, h2, .heading {
     @apply text-[#B5828C];
   }
 
   .brand-button {
-    @apply bg-[#FFB4A2] text-white hover:bg-[#E5989B] transition-all duration-300;
+    @apply bg-[#FFCDB2] text-white hover:bg-[#E5989B] transition-all duration-300;
   }
 
   .brand-accent {

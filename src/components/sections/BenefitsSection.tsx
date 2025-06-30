@@ -26,10 +26,10 @@ const BenefitsSection = () => {
       <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-12">Transform Your Team Dynamics</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {benefits.map((benefit, index) => (
-          <Card key={index} className="bg-white/90 backdrop-blur-sm border-[#FFB4A2] hover:shadow-xl transition-all hover:scale-105">
+          <Card key={index} className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B] hover:shadow-xl transition-all hover:scale-105">
             <CardHeader className="text-center">
               <div className="w-16 h-16 bg-[#B5828C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <benefit.icon className="w-8 h-8 text-[#B5828C]" />
+                <benefit.icon className="w-8 h-8 text-[#E5989B]" />
               </div>
               <CardTitle className="text-[#B5828C] text-xl">{benefit.title}</CardTitle>
             </CardHeader>

@@ -99,7 +99,7 @@ const PricingPlans = () => {
         <button
           onClick={() => setIsYearly(!isYearly)}
           className={`relative w-16 h-8 rounded-full transition-colors ${
-            isYearly ? 'bg-[#FFB4A2]' : 'bg-gray-300'
+            isYearly ? 'bg-[#FFCDB2]' : 'bg-gray-300'
           }`}
         >
           <div
@@ -119,15 +119,15 @@ const PricingPlans = () => {
         {tiers.map((tier) => (
           <Card
             key={tier.id}
-            className={`relative bg-white/90 backdrop-blur-sm border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+            className={`relative bg-[#F1F4F5] backdrop-blur-sm border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 ${
               tier.popular 
-                ? 'border-[#FFB4A2] scale-105 shadow-lg shadow-[#B5828C]/20' 
-                : 'border-[#E5989B] hover:border-[#FFB4A2] shadow-md shadow-[#B5828C]/10'
+                ? 'border-[#FFCDB2] scale-105 shadow-lg shadow-[#B5828C]/20' 
+                : 'border-[#E5989B] hover:border-[#FFCDB2] shadow-md shadow-[#B5828C]/10'
             }`}
           >
             {tier.popular && (
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#FFB4A2] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
+                <span className="bg-[#FFCDB2] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
                   Most Popular
                 </span>
               </div>
@@ -154,7 +154,7 @@ const PricingPlans = () => {
               <ul className="space-y-3">
                 {tier.features.map((feature, index) => (
                   <li key={index} className="flex items-center text-sm">
-                    <Check className="w-4 h-4 text-[#FFB4A2] mr-3 flex-shrink-0" />
+                    <Check className="w-4 h-4 text-[#E5989B] mr-3 flex-shrink-0" />
                     <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
@@ -163,8 +163,8 @@ const PricingPlans = () => {
               <Button
                 className={`w-full mt-6 transition-all duration-300 ${
                   tier.popular
-                    ? 'bg-[#FFB4A2] hover:bg-[#E5989B] text-white shadow-md hover:shadow-lg'
-                    : 'bg-white text-[#FFB4A2] border-2 border-[#FFB4A2] hover:bg-[#FFB4A2] hover:text-white shadow-sm hover:shadow-md'
+                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-white shadow-md hover:shadow-lg'
+                    : 'bg-white text-[#FFCDB2] border-2 border-[#FFCDB2] hover:bg-[#FFCDB2] hover:text-white shadow-sm hover:shadow-md'
                 }`}
               >
                 {tier.cta}
@@ -180,7 +180,7 @@ const PricingPlans = () => {
           All plans include a 14-day free trial. No credit card required.
         </p>
         <p className="text-sm text-[#E5989B]">
-          Need a custom solution? <a href="/contact" className="text-[#FFB4A2] underline hover:text-[#E5989B] transition-colors">Contact our sales team</a>
+          Need a custom solution? <a href="/contact" className="text-[#FFCDB2] underline hover:text-[#E5989B] transition-colors">Contact our sales team</a>
         </p>
       </div>
     </div>

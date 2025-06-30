@@ -102,7 +102,7 @@ const ContactForm = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="max-w-2xl mx-auto">
-        <Card className="bg-white/90 backdrop-blur-sm border-[#E5989B]">
+        <Card className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B]">
           <CardHeader>
             <CardTitle className="text-[#B5828C] text-2xl">Tell Us About Your Team</CardTitle>
             <CardDescription>
@@ -125,7 +125,7 @@ const ContactForm = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-3 text-lg"
+                className="w-full bg-[#FFCDB2] hover:bg-[#E5989B] text-white py-3 text-lg transition-all duration-300"
               >
                 {isSubmitting ? (
                   <>
@@ -148,7 +148,7 @@ const ContactForm = () => {
         </Card>
 
         {/* Benefits Section */}
-        <Card className="mt-8 bg-white/80 backdrop-blur-sm border-[#FFB4A2]">
+        <Card className="mt-8 bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B]">
           <CardContent className="pt-6">
             <h3 className="text-lg font-semibold text-[#B5828C] mb-4">What you'll get in your demo:</h3>
             <div className="space-y-3">
@@ -160,7 +160,7 @@ const ContactForm = () => {
                 "Implementation timeline and onboarding overview"
               ].map((benefit, index) => (
                 <div key={index} className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
+                  <CheckCircle className="w-5 h-5 text-[#E5989B] mr-3" />
                   <span className="text-gray-700">{benefit}</span>
                 </div>
               ))}

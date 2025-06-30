@@ -27,10 +27,10 @@ const ProcessSteps = () => {
       <div className="grid md:grid-cols-3 gap-8">
         {steps.map((step, index) => (
           <div key={index} className="text-center relative">
-            <Card className="bg-white/80 backdrop-blur-sm border-[#FFB4A2] hover:shadow-lg transition-shadow h-full">
+            <Card className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B] hover:shadow-lg transition-shadow h-full">
               <CardHeader>
                 <div className="w-16 h-16 bg-[#B5828C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <step.icon className="w-8 h-8 text-[#B5828C]" />
+                  <step.icon className="w-8 h-8 text-[#E5989B]" />
                 </div>
                 <CardTitle className="text-[#B5828C]">
                   Step {index + 1}: {step.title}
@@ -42,7 +42,7 @@ const ProcessSteps = () => {
             </Card>
             {index < steps.length - 1 && (
               <div className="hidden md:block absolute top-1/2 -right-4 transform translate-x-1/2 -translate-y-1/2 z-10">
-                <ArrowRight className="w-6 h-6 text-[#B5828C]" />
+                <ArrowRight className="w-6 h-6 text-[#E5989B]" />
               </div>
             )}
           </div>

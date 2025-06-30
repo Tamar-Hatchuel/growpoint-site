@@ -30,7 +30,7 @@ const HeroSection = () => {
         <Link to="/demo">
           <Button 
             size="lg" 
-            className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-12 py-6 text-xl font-semibold"
+            className="bg-[#FFCDB2] hover:bg-[#E5989B] text-white px-12 py-6 text-xl font-semibold transition-all duration-300"
           >
             Get Started Free
             <ArrowRight className="w-6 h-6 ml-2" />

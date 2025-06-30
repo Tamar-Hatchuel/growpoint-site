@@ -24,7 +24,7 @@ const CTASection = ({
 }: CTASectionProps) => {
   return (
     <div className="container mx-auto px-4 text-center">
-      <Card className="bg-white/90 backdrop-blur-sm border-[#B5828C] max-w-3xl mx-auto">
+      <Card className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B] max-w-3xl mx-auto">
         <CardHeader>
           <CardTitle className="text-[#B5828C] text-3xl">{title}</CardTitle>
           <CardDescription className="text-lg text-gray-700">
@@ -36,7 +36,7 @@ const CTASection = ({
             <Link to={primaryButtonLink}>
               <Button 
                 size="lg" 
-                className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-8 py-3"
+                className="bg-[#FFCDB2] hover:bg-[#E5989B] text-white px-8 py-3 transition-all duration-300"
               >
                 {primaryButtonText}
               </Button>
@@ -46,7 +46,7 @@ const CTASection = ({
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="border-[#B5828C] text-[#B5828C] hover:bg-[#B5828C] hover:text-white px-8 py-3"
+                  className="border-[#E5989B] text-[#B5828C] hover:bg-[#E5989B] hover:text-white px-8 py-3 transition-all duration-300"
                 >
                   {secondaryButtonText}
                 </Button>
