@@ -116,55 +116,60 @@ const PricingPlans = () => {
 
       {/* Pricing Cards */}
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-16">
-        {tiers.map((tier) => (
+        {tiers.map((tier, index) => (
           <Card
             key={tier.id}
-            className={`relative bg-[#F1F4F5] backdrop-blur-sm border-2 hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+            className={`relative bg-gradient-to-br from-[#FFCDB2] to-[#FFCDB2]/80 backdrop-blur-sm border-2 rounded-3xl transition-all duration-300 hover:scale-[1.04] shadow-lg hover:shadow-2xl group ${
               tier.popular 
-                ? 'border-[#FFCDB2] scale-105 shadow-lg shadow-[#B5828C]/20' 
-                : 'border-[#E5989B] hover:border-[#FFCDB2] shadow-md shadow-[#B5828C]/10'
+                ? 'border-[#E5989B] scale-105 shadow-2xl animate-[fade-in_0.6s_ease-out_0.3s_both,bounce_0.8s_ease-out_0.5s_both]' 
+                : 'border-[#E5989B] hover:border-[#E5989B] shadow-lg hover:shadow-2xl'
             }`}
+            style={{
+              animation: tier.popular 
+                ? 'fade-in 0.6s ease-out 0.3s both, bounce 0.8s ease-out 0.5s both'
+                : `fade-in 0.6s ease-out ${0.1 + index * 0.1}s both`
+            }}
           >
             {tier.popular && (
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-[#FFCDB2] text-white px-4 py-1 rounded-full text-sm font-medium shadow-md">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <span className="bg-[#FFCDB2] text-[#B5828C] px-6 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-[#E5989B]">
                   Most Popular
                 </span>
               </div>
             )}
 
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-[#B5828C] text-xl">{tier.name}</CardTitle>
-              <CardDescription className="text-sm text-[#E5989B]">{tier.subtitle}</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-[#B5828C]">
+            <CardHeader className="text-center pb-4 pt-8">
+              <CardTitle className="text-[#B5828C] text-2xl font-bold">{tier.name}</CardTitle>
+              <CardDescription className="text-sm text-[#B5828C] font-medium">{tier.subtitle}</CardDescription>
+              <div className="mt-6">
+                <span className="text-5xl font-bold text-[#B5828C]">
                   {typeof tier.price.monthly === 'number' 
                     ? `$${isYearly ? tier.price.yearly : tier.price.monthly}`
                     : tier.price.monthly
                   }
                 </span>
                 {typeof tier.price.monthly === 'number' && (
-                  <span className="text-[#E5989B] ml-1">/month</span>
+                  <span className="text-[#E5989B] ml-2 text-lg font-medium">/month</span>
                 )}
               </div>
-              <p className="text-sm text-[#E5989B] mt-2">{tier.description}</p>
+              <p className="text-sm text-[#B5828C] mt-3 font-medium">{tier.description}</p>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              <ul className="space-y-3">
+            <CardContent className="space-y-6 px-6 pb-8">
+              <ul className="space-y-4">
                 {tier.features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm">
-                    <Check className="w-4 h-4 text-[#E5989B] mr-3 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
+                  <li key={index} className="flex items-start text-sm">
+                    <Check className="w-5 h-5 text-[#E5989B] mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-[#B5828C] leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <Button
-                className={`w-full mt-6 transition-all duration-300 ${
+                className={`w-full mt-8 h-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-[0.98] ${
                   tier.popular
-                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-white shadow-md hover:shadow-lg'
-                    : 'bg-white text-[#FFCDB2] border-2 border-[#FFCDB2] hover:bg-[#FFCDB2] hover:text-white shadow-sm hover:shadow-md'
+                    ? 'bg-[#FFCDB2] hover:bg-[#E5989B] text-[#B5828C] hover:text-white border-2 border-[#E5989B]'
+                    : 'bg-[#FFCDB2] text-[#B5828C] border-2 border-[#E5989B] hover:bg-[#E5989B] hover:text-white'
                 }`}
               >
                 {tier.cta}
@@ -176,11 +181,11 @@ const PricingPlans = () => {
 
       {/* Additional Info */}
       <div className="text-center">
-        <p className="text-[#B5828C] mb-4 font-medium">
+        <p className="text-[#B5828C] mb-4 font-bold text-lg">
           All plans include a 14-day free trial. No credit card required.
         </p>
-        <p className="text-sm text-[#E5989B]">
-          Need a custom solution? <a href="/contact" className="text-[#FFCDB2] underline hover:text-[#E5989B] transition-colors">Contact our sales team</a>
+        <p className="text-sm text-[#B5828C]">
+          Need a custom solution? <a href="/contact" className="text-[#E5989B] underline hover:text-[#B5828C] transition-colors font-medium">Contact our sales team</a>
         </p>
       </div>
     </div>

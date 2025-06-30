@@ -24,19 +24,19 @@ const CTASection = ({
 }: CTASectionProps) => {
   return (
     <div className="container mx-auto px-4 text-center">
-      <Card className="bg-[#F1F4F5] backdrop-blur-sm border-[#E5989B] max-w-3xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-[#B5828C] text-3xl">{title}</CardTitle>
-          <CardDescription className="text-lg text-gray-700">
+      <Card className="bg-gradient-to-br from-[#FFCDB2] to-[#FFCDB2]/80 backdrop-blur-sm border-2 border-[#E5989B] rounded-3xl max-w-4xl mx-auto shadow-2xl">
+        <CardHeader className="pb-6">
+          <CardTitle className="text-[#B5828C] text-4xl font-bold mb-4">{title}</CardTitle>
+          <CardDescription className="text-xl text-[#B5828C] leading-relaxed max-w-2xl mx-auto">
             {description}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6 pb-8">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to={primaryButtonLink}>
               <Button 
                 size="lg" 
-                className="bg-[#FFCDB2] hover:bg-[#E5989B] text-white px-8 py-3 transition-all duration-300"
+                className="bg-[#FFCDB2] hover:bg-[#E5989B] text-[#B5828C] hover:text-white px-8 py-4 h-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-[0.98] border-2 border-[#E5989B] min-w-[200px]"
               >
                 {primaryButtonText}
               </Button>
@@ -46,14 +46,14 @@ const CTASection = ({
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="border-[#E5989B] text-[#B5828C] hover:bg-[#E5989B] hover:text-white px-8 py-3 transition-all duration-300"
+                  className="border-2 border-[#E5989B] text-[#B5828C] hover:bg-[#E5989B] hover:text-white px-8 py-4 h-12 rounded-full font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl active:scale-[0.98] bg-white hover:bg-[#E5989B] min-w-[200px]"
                 >
                   {secondaryButtonText}
                 </Button>
               </Link>
             )}
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-[#B5828C] font-medium">
             No credit card required • 14-day free trial • Setup in minutes
           </p>
         </CardContent>
