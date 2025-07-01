@@ -26,7 +26,6 @@ const Footer = () => {
               Terms of Service
             </button>
             <a href="/contact" className="hover:underline hover:text-[#E5989B] transition-colors">Contact</a>
-            <a href="#" className="hover:underline hover:text-[#E5989B] transition-colors">Support</a>
           </div>
         </div>
       </footer>
