@@ -2,45 +2,99 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
+
 const PricingPlans = () => {
-  const plans = [{
-    name: "Starter",
-    price: "$29",
-    period: "/month",
-    description: "Perfect for small teams getting started",
-    features: ["Up to 10 team members", "Basic sociometric surveys", "Real-time feedback dashboard", "Email support", "Basic analytics"],
-    cta: "Get Started",
-    link: "/contact",
-    popular: false
-  }, {
-    name: "Standard",
-    price: "$79",
-    period: "/month",
-    description: "Ideal for growing teams and departments",
-    features: ["Up to 50 team members", "Advanced survey templates", "AI-powered insights", "Team collaboration metrics", "Priority support", "Custom reports", "Integration support"],
-    cta: "Get Started",
-    link: "/contact",
-    popular: true
-  }, {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    description: "For large organizations with complex needs",
-    features: ["Unlimited team members", "Custom survey design", "Advanced AI analytics", "Multi-department insights", "Dedicated account manager", "Custom integrations", "SLA guarantee", "On-site training"],
-    cta: "Contact Us",
-    link: "/contact",
-    popular: false
-  }];
-  return <div className="container mx-auto px-4">
+  const plans = [
+    {
+      name: "Basic",
+      price: "$129",
+      period: "/month",
+      description: "Perfect for small to medium teams",
+      features: [
+        "2–50 employees",
+        "Core sociometric features",
+        "Basic team surveys",
+        "Email support",
+        "Standard analytics dashboard",
+        "Monthly team reports"
+      ],
+      cta: "Get Started",
+      link: "/contact",
+      popular: false
+    },
+    {
+      name: "Standard",
+      price: "$299",
+      period: "/month",
+      description: "Ideal for growing organizations",
+      features: [
+        "51–200 employees",
+        "Advanced analytics dashboard",
+        "Team onboarding tools",
+        "Custom survey templates",
+        "Integration support",
+        "Priority email support",
+        "Weekly insights reports"
+      ],
+      cta: "Get Started",
+      link: "/contact",
+      popular: true
+    },
+    {
+      name: "Pro",
+      price: "$599",
+      period: "/month",
+      description: "For large teams needing advanced insights",
+      features: [
+        "201–500 employees",
+        "Advanced AI-powered insights",
+        "Priority support & onboarding",
+        "Custom integrations",
+        "Advanced reporting suite",
+        "Dedicated success manager",
+        "Real-time collaboration metrics"
+      ],
+      cta: "Get Started",
+      link: "/contact",
+      popular: false
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      period: "",
+      description: "For enterprises with complex requirements",
+      features: [
+        "501+ employees",
+        "Dedicated account manager",
+        "Enterprise compliance tools",
+        "Custom feature development",
+        "SLA guarantee",
+        "24/7 priority support",
+        "On-premise deployment options",
+        "Advanced security features"
+      ],
+      cta: "Contact Us",
+      link: "/contact",
+      popular: false
+    }
+  ];
+
+  return (
+    <div className="container mx-auto px-4">
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {plans.map((plan, index) => <div key={index} className="relative animate-fade-in-up" style={{
-        animationDelay: `${index * 0.2}s`
-      }}>
-            {plan.popular && <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+        {plans.map((plan, index) => (
+          <div
+            key={index}
+            className="relative animate-fade-in-up"
+            style={{ animationDelay: `${index * 0.2}s` }}
+          >
+            {plan.popular && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                 <span className="bg-[#FFB4A2] text-[#B5828C] px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                   Most Popular
                 </span>
-              </div>}
+              </div>
+            )}
             
             <Card className="brand-card pricing-card-hover h-full flex flex-col relative border-2 border-[#E5989B] rounded-3xl">
               <CardHeader className="text-center pb-6 pt-8">
@@ -54,10 +108,12 @@ const PricingPlans = () => {
               
               <CardContent className="flex-1 flex flex-col">
                 <ul className="space-y-4 mb-8 flex-1">
-                  {plan.features.map((feature, idx) => <li key={idx} className="flex items-start">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
                       <Check className="w-5 h-5 text-[#E5989B] mr-3 mt-0.5 flex-shrink-0" />
                       <span className="text-[#22223B] text-base leading-relaxed">{feature}</span>
-                    </li>)}
+                    </li>
+                  ))}
                 </ul>
                 
                 <Link to={plan.link} className="w-full">
@@ -67,8 +123,11 @@ const PricingPlans = () => {
                 </Link>
               </CardContent>
             </Card>
-          </div>)}
+          </div>
+        ))}
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default PricingPlans;
