@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
@@ -81,43 +82,43 @@ const PricingPlans = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {plans.map((plan, index) => (
           <div
             key={index}
-            className="relative animate-fade-in-up"
-            style={{ animationDelay: `${index * 0.2}s` }}
+            className="relative animate-fade-in-up h-full"
+            style={{ animationDelay: `${index * 0.1}s` }}
           >
             {plan.popular && (
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                <span className="bg-[#FFB4A2] text-[#B5828C] px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                <span className="bg-[#FFB4A2] text-[#B5828C] px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
                   Most Popular
                 </span>
               </div>
             )}
             
             <Card className="brand-card pricing-card-hover h-full flex flex-col relative border-2 border-[#E5989B] rounded-3xl">
-              <CardHeader className="text-center pb-6 pt-8">
-                <CardTitle className="text-[#B5828C] font-bold mb-2 text-4xl">{plan.name}</CardTitle>
-                <div className="mb-4">
-                  <span className="text-[#B5828C] text-4xl font-bold">{plan.price}</span>
-                  <span className="text-[#E5989B] text-lg">{plan.period}</span>
+              <CardHeader className="text-center pb-4 pt-6">
+                <CardTitle className="text-[#B5828C] font-bold mb-2 text-2xl lg:text-3xl">{plan.name}</CardTitle>
+                <div className="mb-3">
+                  <span className="text-[#B5828C] text-2xl lg:text-3xl font-bold">{plan.price}</span>
+                  <span className="text-[#E5989B] text-sm lg:text-base">{plan.period}</span>
                 </div>
-                <CardDescription className="text-[#E5989B] text-base">{plan.description}</CardDescription>
+                <CardDescription className="text-[#E5989B] text-sm lg:text-base">{plan.description}</CardDescription>
               </CardHeader>
               
-              <CardContent className="flex-1 flex flex-col">
-                <ul className="space-y-4 mb-8 flex-1">
+              <CardContent className="flex-1 flex flex-col px-4 lg:px-6">
+                <ul className="space-y-3 mb-6 flex-1">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start">
-                      <Check className="w-5 h-5 text-[#E5989B] mr-3 mt-0.5 flex-shrink-0" />
-                      <span className="text-[#22223B] text-base leading-relaxed">{feature}</span>
+                      <Check className="w-4 h-4 text-[#E5989B] mr-2 mt-0.5 flex-shrink-0" />
+                      <span className="text-[#22223B] text-sm lg:text-base leading-relaxed">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 
                 <Link to={plan.link} className="w-full">
-                  <Button className="w-full brand-button text-lg py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-[#ffb4a2]">
+                  <Button className="w-full brand-button text-base lg:text-lg py-4 lg:py-5 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 bg-[#ffb4a2]">
                     {plan.cta}
                   </Button>
                 </Link>
