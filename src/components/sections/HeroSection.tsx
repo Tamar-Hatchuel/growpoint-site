@@ -26,13 +26,13 @@ const HeroSection = () => {
           {/* Main CTAs - Request Demo and Try Product Live */}
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 animate-fade-in-up animate-delay-400">
             <Link to="/contact">
-              <Button size="lg" className="brand-button px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation text-white bg-[#ffb4a2]">
+              <Button size="lg" className="brand-button py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation text-white bg-[#ffb4a2] text-lg px-[36px]">
                 Request Demo
                 <ArrowRight className="w-6 h-6 ml-2" />
               </Button>
             </Link>
             
-            <Button size="lg" className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation" onClick={() => window.open('https://preview--growpoint-app.lovable.app/', '_blank')}>
+            <Button size="lg" onClick={() => window.open('https://preview--growpoint-app.lovable.app/', '_blank')} className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation text-lg px-[36px]">
               <ExternalLink className="w-6 h-6 mr-2" />
               Try the Product Live
             </Button>
