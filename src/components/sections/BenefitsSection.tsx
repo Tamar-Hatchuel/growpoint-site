@@ -15,7 +15,7 @@ const BenefitsSection = () => {
     description: "Smart recommendations and actionable strategies based on team data and behavioral patterns."
   }];
   return <div className="container mx-auto px-4">
-      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up">Transform Your Team Dynamics</h2>
+      <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up md:text-4xl">Transform Your Team Dynamics</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {benefits.map((benefit, index) => <Card key={index} className="brand-card card-hover group animate-fade-in-up" style={{
         animationDelay: `${index * 0.2}s`
