@@ -15,7 +15,7 @@ const ProcessSteps = () => {
     description: "Access real-time analytics, actionable recommendations, and track team cohesion metrics over time."
   }];
   return <div className="container mx-auto px-4">
-      <h2 className="text-4xl md:text-5xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up">How It Works</h2>
+      <h2 className="text-4xl font-bold text-[#B5828C] text-center mb-16 animate-fade-in-up md:text-4xl">How It Works</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {steps.map((step, index) => <div key={index} className="text-center relative">
             <Card className="brand-card card-hover h-full group animate-fade-in-up" style={{
