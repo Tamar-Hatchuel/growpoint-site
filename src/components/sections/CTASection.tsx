@@ -26,7 +26,7 @@ const CTASection = ({
         <CardContent className="space-y-8">
           <div className="flex justify-center">
             <Link to={primaryButtonLink}>
-              <Button size="lg" className="brand-button px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation bg-[#ffb4a2]">
+              <Button size="lg" className="brand-button py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation bg-[#ffb4a2] px-[36px] text-lg font-bold">
                 {primaryButtonText}
               </Button>
             </Link>
