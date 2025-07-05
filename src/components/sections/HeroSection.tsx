@@ -1,8 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const HeroSection = () => {
   return <div className="relative min-h-[80vh] flex items-center">
       {/* Hero background gradient */}
@@ -20,7 +18,7 @@ const HeroSection = () => {
           </div>
           
           {/* Description */}
-          <p className="text-xl md:text-2xl text-[#B5828C] max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up animate-delay-200">
+          <p className="text-xl text-[#B5828C] max-w-4xl mx-auto leading-relaxed mb-12 animate-fade-in-up animate-delay-200 md:text-lg">
             GrowPoint is a SaaS platform that helps organizations understand and improve team dynamics 
             through anonymous feedback, AI insights, and real-time analytics.
           </p>
@@ -34,11 +32,7 @@ const HeroSection = () => {
               </Button>
             </Link>
             
-            <Button 
-              size="lg"
-              className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation"
-              onClick={() => window.open('https://preview--growpoint-app.lovable.app/', '_blank')}
-            >
+            <Button size="lg" className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 min-h-[60px] touch-manipulation" onClick={() => window.open('https://preview--growpoint-app.lovable.app/', '_blank')}>
               <ExternalLink className="w-6 h-6 mr-2" />
               Try the Product Live
             </Button>
@@ -47,5 +41,4 @@ const HeroSection = () => {
       </div>
     </div>;
 };
-
 export default HeroSection;
