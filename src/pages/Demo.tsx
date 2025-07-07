@@ -27,19 +27,53 @@ const Demo = () => {
                   Interactive Product Demo
                 </CardTitle>
                 <CardDescription>
-                  Watch a 3-minute walkthrough of GrowPoint's key features and see real team transformations.
+                  Watch our comprehensive walkthrough of GrowPoint's key features and see real team transformations.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="aspect-video bg-gradient-to-br from-[#FFCDB2] to-[#FFB4A2] rounded-lg flex items-center justify-center mb-6">
-                  <div className="text-center">
-                    <Play className="w-16 h-16 text-[#B5828C] mx-auto mb-4" />
-                    <p className="text-[#B5828C] font-medium">Demo Video Coming Soon</p>
-                    <p className="text-[#B5828C]/70 text-sm">Interactive product walkthrough</p>
+              <CardContent className="space-y-8">
+                {/* User Authorization Flow */}
+                <div className="space-y-4">
+                  <h3 className="text-[#B5828C] text-lg font-medium">User Authorization Flow</h3>
+                  <div className="aspect-video rounded-2xl overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.youtube.com/embed/bSSUswbXsd4"
+                      title="User Authorization Flow"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+
+                {/* Admin Authorization Flow */}
+                <div className="space-y-4">
+                  <h3 className="text-[#B5828C] text-lg font-medium">Admin Authorization Flow</h3>
+                  <div className="aspect-video rounded-2xl overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.youtube.com/embed/rN8GDL8iRmw"
+                      title="Admin Authorization Flow"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+
+                {/* HR Authorization Flow */}
+                <div className="space-y-4">
+                  <h3 className="text-[#B5828C] text-lg font-medium">HR Authorization Flow</h3>
+                  <div className="aspect-video rounded-2xl overflow-hidden shadow-lg">
+                    <iframe
+                      src="https://www.youtube.com/embed/QSQH0UZm22E"
+                      title="HR Authorization Flow"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
                   </div>
                 </div>
                 
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-4 pt-4">
                   <Button 
                     size="lg"
                     className="bg-[#B5828C] hover:bg-[#B5828C]/90 text-white"
