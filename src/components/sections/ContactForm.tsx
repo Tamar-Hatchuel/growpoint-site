@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import LeadInputForm from "./contact/LeadInputForm";
 import { submitLeadWithEnhancedDebugging } from "./contact/EnhancedSubmitHandler";
 import { sendConfirmationEmail, sendAdminNotification } from "./contact/EmailTrigger";
+import ConfirmationPopup from "@/components/ui/ConfirmationPopup";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const ContactForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,13 +56,8 @@ const ContactForm = () => {
         }
       });
 
-      // Show success message with sanitized feedback
-      toast({
-        title: "Demo Request Submitted!",
-        description: emailWarnings.length > 0 
-          ? `Request saved successfully! ${emailWarnings.join(', ')} - We'll still contact you within 24 hours.`
-          : "We'll contact you within 24 hours to schedule your personalized demo. Check your email for confirmation.",
-      });
+      // Show confirmation popup instead of toast
+      setShowConfirmation(true);
 
       // Reset form
       setFormData({
@@ -168,6 +165,11 @@ const ContactForm = () => {
           </CardContent>
         </Card>
       </div>
+
+      <ConfirmationPopup
+        isVisible={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+      />
     </div>
   );
 };

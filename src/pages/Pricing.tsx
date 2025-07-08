@@ -1,8 +1,11 @@
+
 import PageLayout from "@/components/layout/PageLayout";
 import PricingPlans from "@/components/sections/PricingPlans";
 import TimedPopup from "@/components/ui/TimedPopup";
+
 const Pricing = () => {
-  return <PageLayout>
+  return (
+    <PageLayout>
       <div className="py-16">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in-up">
@@ -23,7 +26,15 @@ const Pricing = () => {
         </div>
       </div>
       
-      <TimedPopup message="Not sure which plan fits your team?" buttonText="Contact Us for Help" buttonLink="/contact" delay={5000} sessionKey="pricing-popup-shown" />
-    </PageLayout>;
+      <TimedPopup
+        message="Not sure which plan fits your team?"
+        buttonText="Contact Us for Help"
+        buttonLink="/contact"
+        delay={5000}
+        sessionKey="pricing-popup-shown"
+      />
+    </PageLayout>
+  );
 };
+
 export default Pricing;

@@ -2,6 +2,7 @@
 import { ReactNode } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ExitIntentPopup from '../ui/ExitIntentPopup';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -27,6 +28,8 @@ const PageLayout = ({ children, showFooter = true }: PageLayoutProps) => {
         {children}
       </main>
       {showFooter && <Footer />}
+      
+      <ExitIntentPopup />
     </div>
   );
 };
