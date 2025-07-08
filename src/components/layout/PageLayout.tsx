@@ -10,6 +10,14 @@ interface PageLayoutProps {
 }
 
 const PageLayout = ({ children, showFooter = true }: PageLayoutProps) => {
+  // Enable debug mode by checking URL params or localStorage
+  const debugMode = new URLSearchParams(window.location.search).has('debug') || 
+                   localStorage.getItem('popup-debug') === 'true';
+
+  if (debugMode) {
+    console.log('[PageLayout] Debug mode enabled for popups');
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Hero background gradient matching the app */}
@@ -29,7 +37,14 @@ const PageLayout = ({ children, showFooter = true }: PageLayoutProps) => {
       </main>
       {showFooter && <Footer />}
       
-      <ExitIntentPopup />
+      <ExitIntentPopup debugMode={debugMode} />
+      
+      {debugMode && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white p-2 rounded text-xs z-50">
+          🐛 DEBUG MODE ACTIVE<br/>
+          Add ?debug to URL or set localStorage popup-debug=true
+        </div>
+      )}
     </div>
   );
 };

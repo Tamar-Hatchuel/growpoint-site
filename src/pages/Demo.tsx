@@ -6,6 +6,12 @@ import { Play, Users, BarChart3, MessageSquare, Target, ExternalLink } from "luc
 import TimedPopup from "@/components/ui/TimedPopup";
 
 const Demo = () => {
+  // Enable debug mode by checking URL params or localStorage
+  const debugMode = new URLSearchParams(window.location.search).has('debug') || 
+                   localStorage.getItem('popup-debug') === 'true';
+
+  console.log('[Demo] Page loaded, debug mode:', debugMode);
+
   return (
     <PageLayout>
       <div className="py-16">
@@ -176,8 +182,9 @@ const Demo = () => {
         message="Let's find the right plan for your company"
         buttonText="View Pricing"
         buttonLink="/pricing"
-        delay={5000}
+        delay={2000} // Reduced from 5000 to 2000ms (2 seconds)
         sessionKey="demo-popup-shown"
+        debugMode={debugMode}
       />
     </PageLayout>
   );

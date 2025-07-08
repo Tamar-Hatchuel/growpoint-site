@@ -4,6 +4,12 @@ import PricingPlans from "@/components/sections/PricingPlans";
 import TimedPopup from "@/components/ui/TimedPopup";
 
 const Pricing = () => {
+  // Enable debug mode by checking URL params or localStorage
+  const debugMode = new URLSearchParams(window.location.search).has('debug') || 
+                   localStorage.getItem('popup-debug') === 'true';
+
+  console.log('[Pricing] Page loaded, debug mode:', debugMode);
+
   return (
     <PageLayout>
       <div className="py-16">
@@ -30,8 +36,9 @@ const Pricing = () => {
         message="Not sure which plan fits your team?"
         buttonText="Contact Us for Help"
         buttonLink="/contact"
-        delay={5000}
+        delay={2000} // Reduced from 5000 to 2000ms (2 seconds)
         sessionKey="pricing-popup-shown"
+        debugMode={debugMode}
       />
     </PageLayout>
   );
